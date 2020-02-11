@@ -2,8 +2,9 @@
   "name": "react-native-encrypted-storage",
   "title": "React Native Encrypted Storage",
   "version": "1.0.0",
-  "description": "TODO",
-  "main": "index.js",
+  "description": "A React Native wrapper over SharedPreferences and Keychain to provide a secure alternative to Async Storage",
+  "main": "./lib/index.js",
+  "types": "./types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +14,11 @@
     "baseUrl": "https://github.com/emeraldsanto/react-native-encrypted-storage"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "async storage",
+    "storage",
+    "encrypted",
+    "secure"
   ],
   "author": {
     "name": "Yanick",
@@ -24,6 +29,6 @@
   "readmeFilename": "README.md",
   "peerDependencies": {
     "react": "^16.8.1",
-    "react-native": ">=0.59.0-rc.0 <1.0.x"
+    "react-native": ">=0.60.0"
   }
 }
