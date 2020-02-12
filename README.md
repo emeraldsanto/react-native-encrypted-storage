@@ -31,7 +31,7 @@ Since version 0.60, React Native supports auto linking. This means no additional
 $ react-native link react-native-encrypted-storage
 ```
 
-- Special note for iOS using `cocoapods`, run:
+Special note for iOS using `cocoapods`, run:
 
 ```bash
 $ cd ios && pod install && cd ..
