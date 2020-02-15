@@ -7,7 +7,7 @@
   "types": "./types/index.d.ts",
   "homepage": "https://www.github.com/emeraldsanto/react-native-encrypted-storage#readme",
   "scripts": {
-    "test": "jest ./lib"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -35,5 +35,12 @@
   },
   "devDependencies": {
     "jest": "^25.1.0"
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true,
+    "roots": [
+      "<rootDir>/lib/"
+    ]
   }
 }

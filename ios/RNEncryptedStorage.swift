@@ -17,7 +17,7 @@ class RNEncryptedStorage: NSObject {
     return false;
   }
   
-  @objc func store(_ key : String, value : String, resolver resolve : RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+  @objc func setItem(_ key : String, value : String, resolver resolve : RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
     guard let dataFromValue = value.data(using: .utf8, allowLossyConversion: false) else {
       return reject("Error parsing value for key \(key)", nil, nil);
     }
@@ -44,7 +44,7 @@ class RNEncryptedStorage: NSObject {
   }
   
   @objc
-  func retrieve(_ key : String, resolver resolve : RCTPromiseResolveBlock, rejecter reject : RCTPromiseRejectBlock) {
+  func getItem(_ key : String, resolver resolve : RCTPromiseResolveBlock, rejecter reject : RCTPromiseRejectBlock) {
     let retrieveQuery : [String : Any] = [
       kSecClass as String : kSecClassGenericPassword,
       kSecAttrAccount as String : key,
@@ -67,7 +67,7 @@ class RNEncryptedStorage: NSObject {
   }
   
   @objc
-  func remove(_ key : String, resolver resolve : RCTPromiseResolveBlock, rejecter reject : RCTPromiseRejectBlock) {
+  func removeItem(_ key : String, resolver resolve : RCTPromiseResolveBlock, rejecter reject : RCTPromiseRejectBlock) {
     let removeQuery : [String : Any] = [
       kSecClass as String : kSecClassGenericPassword,
       kSecAttrAccount as String : key,
