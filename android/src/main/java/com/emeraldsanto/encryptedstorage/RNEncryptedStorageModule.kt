@@ -33,7 +33,7 @@ class RNEncryptedStorageModule(context : ReactApplicationContext) : ReactContext
     }
 
     @ReactMethod
-    fun store(key : String, value : String, promise : Promise) {
+    fun setItem(key : String, value : String, promise : Promise) {
         val editor = this.sharedPreferences.edit();
         editor.putString(key, value);
         val saved = editor.commit();
@@ -48,7 +48,7 @@ class RNEncryptedStorageModule(context : ReactApplicationContext) : ReactContext
     }
 
     @ReactMethod
-    fun retrieve(key : String, promise : Promise) {
+    fun getItem(key : String, promise : Promise) {
         val value = this.sharedPreferences.getString(key, "");
 
         if (value.isNullOrEmpty()) {
@@ -61,7 +61,7 @@ class RNEncryptedStorageModule(context : ReactApplicationContext) : ReactContext
     }
 
     @ReactMethod
-    fun remove(key : String, promise : Promise) {
+    fun removeItem(key : String, promise : Promise) {
         val editor = this.sharedPreferences.edit();
         editor.remove(key);
         val saved = editor.commit();
