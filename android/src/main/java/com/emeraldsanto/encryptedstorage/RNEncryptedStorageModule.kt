@@ -1,8 +1,9 @@
 package com.emeraldsanto.encryptedstorage
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -18,7 +19,13 @@ class RNEncryptedStorageModule(context : ReactApplicationContext) : ReactContext
     private val sharedPreferences : SharedPreferences;
 
     init {
-        this.sharedPreferences = context.getSharedPreferences(RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME, Context.MODE_PRIVATE)
+        this.sharedPreferences = EncryptedSharedPreferences.create(
+            RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME,
+            MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
+            context,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        );
     }
 
     override fun getName(): String {
@@ -26,7 +33,7 @@ class RNEncryptedStorageModule(context : ReactApplicationContext) : ReactContext
     }
 
     @ReactMethod
-    fun store(key : String, value : String, promise : Promise) {
+    fun setItem(key : String, value : String, promise : Promise) {
         val editor = this.sharedPreferences.edit();
         editor.putString(key, value);
         val saved = editor.commit();
@@ -41,7 +48,7 @@ class RNEncryptedStorageModule(context : ReactApplicationContext) : ReactContext
     }
 
     @ReactMethod
-    fun retrieve(key : String, promise : Promise) {
+    fun getItem(key : String, promise : Promise) {
         val value = this.sharedPreferences.getString(key, "");
 
         if (value.isNullOrEmpty()) {
@@ -54,7 +61,7 @@ class RNEncryptedStorageModule(context : ReactApplicationContext) : ReactContext
     }
 
     @ReactMethod
-    fun remove(key : String, promise : Promise) {
+    fun removeItem(key : String, promise : Promise) {
         val editor = this.sharedPreferences.edit();
         editor.remove(key);
         val saved = editor.commit();

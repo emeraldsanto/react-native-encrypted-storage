@@ -51,18 +51,16 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 
 ```js
 const storeUserSession = async () => {
-    const success = await EncryptedStorage.store('user_session', {
-        username : 'emeraldsanto',
-        age : 21,
-        languages : ['fr', 'en', 'de'],
-        token : 'ACCESS_TOKEN'
-    });
-    
-    if (success === true) {
+    try {
+        await EncryptedStorage.setItem('user_session', {
+            username : 'emeraldsanto',
+            age : 21,
+            languages : ['fr', 'en', 'de'],
+            token : 'ACCESS_TOKEN'
+        });
+
         // Congrats! You've just stored your first value!
-    } 
-    
-    else {
+    } catch (error) {
         // There was an error on the native side
     }
 }
@@ -72,10 +70,14 @@ const storeUserSession = async () => {
 
 ```js
 const retrieveUserSession = async () => {
-    const session = await EncryptedStorage.retrieve("user_session");
+    try {   
+        const session = await EncryptedStorage.getItem("user_session");
     
-    if (session !== undefined) {
-        // Congrats! You've just retrieved your first value!
+        if (session !== null) {
+            // Congrats! You've just retrieved your first value!
+        }
+    } catch (error) {
+        // There was an error on the native side
     }
 }
 ```
@@ -84,12 +86,11 @@ const retrieveUserSession = async () => {
 
 ```js
 const removeUserSession = async () => {
-    const success = await EncryptedStorage.remove('user_session');
-    
-    if (success === true) {
+    try {
+        await EncryptedStorage.removeItem('user_session');
         // Congrats! You've just removed your first value!
-        const previousValue = await EncryptedStorage.retrieve('user_session');
-        console.log(previousValue); // undefined
+    } catch (error) {
+        // There was an error on the native side
     }
 }
 ```

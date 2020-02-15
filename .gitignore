@@ -41,3 +41,6 @@ buck-out/
 \.buckd/
 *.keystore
 .vscode/settings.json
+
+# JEST
+coverage/

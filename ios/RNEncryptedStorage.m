@@ -12,20 +12,20 @@
 @interface RCT_EXTERN_MODULE(RNEncryptedStorage, NSObject)
 
 RCT_EXTERN_METHOD(
-  store: (NSString *)key
+  setItem: (NSString *)key
   value: (NSString *)value
   resolver: (RCTPromiseResolveBlock)resolve
   rejecter: (RCTPromiseRejectBlock)reject
 );
 
 RCT_EXTERN_METHOD(
-  retrieve: (NSString *)key
+  getItem: (NSString *)key
   resolver: (RCTPromiseResolveBlock)resolve
   rejecter: (RCTPromiseRejectBlock)reject
 );
 
 RCT_EXTERN_METHOD(
-  remove: (NSString *)key
+  removeItem: (NSString *)key
   resolver: (RCTPromiseResolveBlock)resolve
   rejecter: (RCTPromiseRejectBlock)reject
 );
