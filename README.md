@@ -51,7 +51,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 
 ```js
 const storeUserSession = async () => {
-    const success = await EncryptedStorage.store('user_session', {
+    const success = await EncryptedStorage.setItem('user_session', {
         username : 'emeraldsanto',
         age : 21,
         languages : ['fr', 'en', 'de'],
@@ -72,7 +72,7 @@ const storeUserSession = async () => {
 
 ```js
 const retrieveUserSession = async () => {
-    const session = await EncryptedStorage.retrieve("user_session");
+    const session = await EncryptedStorage.getItem("user_session");
     
     if (session !== undefined) {
         // Congrats! You've just retrieved your first value!
@@ -84,11 +84,11 @@ const retrieveUserSession = async () => {
 
 ```js
 const removeUserSession = async () => {
-    const success = await EncryptedStorage.remove('user_session');
+    const success = await EncryptedStorage.removeItem('user_session');
     
     if (success === true) {
         // Congrats! You've just removed your first value!
-        const previousValue = await EncryptedStorage.retrieve('user_session');
+        const previousValue = await EncryptedStorage.getItem('user_session');
         console.log(previousValue); // undefined
     }
 }
