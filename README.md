@@ -52,12 +52,12 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 ```js
 const storeUserSession = async () => {
     try {
-        await EncryptedStorage.setItem('user_session', {
+        await EncryptedStorage.setItem('user_session', JSON.stringify({
             username : 'emeraldsanto',
             age : 21,
             languages : ['fr', 'en', 'de'],
             token : 'ACCESS_TOKEN'
-        });
+        }));
 
         // Congrats! You've just stored your first value!
     } catch (error) {
