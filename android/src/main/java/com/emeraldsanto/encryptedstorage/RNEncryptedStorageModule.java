@@ -72,13 +72,7 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
 
         String value = this.sharedPreferences.getString(key, "");
 
-        if (value == null || value.isEmpty()) {
-            promise.reject(new Resources.NotFoundException(String.format("An error occured while retrieving %s", key)));
-        }
-
-        else {
-            promise.resolve(value);
-        }
+        promise.resolve(value);
     }
 
     @ReactMethod
