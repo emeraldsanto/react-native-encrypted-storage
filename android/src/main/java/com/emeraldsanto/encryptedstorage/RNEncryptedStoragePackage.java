@@ -8,7 +8,7 @@ import com.facebook.react.uimanager.ViewManager;
 import java.util.Collections;
 import java.util.List;
 
-public class RNEncryptedStoragePackage extends ReactPackage {
+public class RNEncryptedStoragePackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
