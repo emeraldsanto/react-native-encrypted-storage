@@ -9,7 +9,6 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   React Native wrapper around SharedPreferences and Keychain to provide a secure alternative to Async Storage
                    DESC
-  s.swift_version = "5.0"
   s.homepage     = "https://github.com/emeraldsanto/react-native-encrypted-storage"
   s.license      = "MIT"
   s.authors      = { "Yanick" => "yanick.belanger@yahoo.com" }
