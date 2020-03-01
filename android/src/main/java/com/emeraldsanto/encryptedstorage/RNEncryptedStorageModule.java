@@ -70,7 +70,7 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        String value = this.sharedPreferences.getString(key, "");
+        String value = this.sharedPreferences.getString(key, null);
 
         promise.resolve(value);
     }
