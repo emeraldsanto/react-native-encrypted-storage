@@ -1,4 +1,5 @@
 # React Native Encrypted Storage
+
 React Native wrapper around SharedPreferences and Keychain to provide a secure alternative to [Async Storage](https://github.com/react-native-community/async-storage).
 
 ## Why ?
@@ -51,48 +52,51 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 
 ```js
 const storeUserSession = async () => {
-    try {
-        await EncryptedStorage.setItem('user_session', JSON.stringify({
-            username : 'emeraldsanto',
-            age : 21,
-            languages : ['fr', 'en', 'de'],
-            token : 'ACCESS_TOKEN'
-        }));
+  try {
+    await EncryptedStorage.setItem(
+      'user_session',
+      JSON.stringify({
+        username: 'emeraldsanto',
+        age: 21,
+        languages: ['fr', 'en', 'de'],
+        token: 'ACCESS_TOKEN'
+      })
+    );
 
-        // Congrats! You've just stored your first value!
-    } catch (error) {
-        // There was an error on the native side
-    }
-}
+    // Congrats! You've just stored your first value!
+  } catch (error) {
+    // There was an error on the native side
+  }
+};
 ```
 
 ### Retrieving a value
 
 ```js
 const retrieveUserSession = async () => {
-    try {   
-        const session = await EncryptedStorage.getItem("user_session");
-    
-        if (session !== null) {
-            // Congrats! You've just retrieved your first value!
-        }
-    } catch (error) {
-        // There was an error on the native side
+  try {
+    const session = await EncryptedStorage.getItem('user_session');
+
+    if (session !== null) {
+      // Congrats! You've just retrieved your first value!
     }
-}
+  } catch (error) {
+    // There was an error on the native side
+  }
+};
 ```
 
 ### Removing a value
 
 ```js
 const removeUserSession = async () => {
-    try {
-        await EncryptedStorage.removeItem('user_session');
-        // Congrats! You've just removed your first value!
-    } catch (error) {
-        // There was an error on the native side
-    }
-}
+  try {
+    await EncryptedStorage.removeItem('user_session');
+    // Congrats! You've just removed your first value!
+  } catch (error) {
+    // There was an error on the native side
+  }
+};
 ```
 
 ## License
