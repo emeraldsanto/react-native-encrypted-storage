@@ -39,7 +39,7 @@ $ cd ios && pod install && cd ..
 
 ## Usage
 
-This module exposes three (3) native functions to `store`, `retrieve` and `remove` a value. They can be used like so:
+This module exposes three native functions to `setItem`, `getItem` and `removeItem` a value. They can be used like so:
 
 ### Import
 
