@@ -73,7 +73,7 @@ const retrieveUserSession = async () => {
     try {   
         const session = await EncryptedStorage.getItem("user_session");
     
-        if (session !== null) {
+        if (session !== undefined) {
             // Congrats! You've just retrieved your first value!
         }
     } catch (error) {
