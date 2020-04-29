@@ -138,9 +138,7 @@ static void ClearKeychainIfNecessary() {
     ClearKeychainIfNecessary();
 
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"Narcity" initialProperties:nil];
-
-    [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView];
+    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"APP_NAME" initialProperties:nil];
 
     rootView.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
