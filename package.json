@@ -8,7 +8,7 @@
   "homepage": "https://www.github.com/emeraldsanto/react-native-encrypted-storage#readme",
   "scripts": {
     "test": "jest",
-    "prepare": "tsc"
+    "prepare": "npm run test && tsc"
   },
   "repository": {
     "type": "git",
