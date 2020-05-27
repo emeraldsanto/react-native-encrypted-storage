@@ -1,5 +1,6 @@
-const EncryptedStorage = require("./EncryptedStorage");
-const { NativeModules } = require("react-native");
+import { NativeModules } from "react-native";
+import EncryptedStorage from "./EncryptedStorage";
+
 const { RNEncryptedStorage } = NativeModules;
 
 describe("lib/EncryptedStorage", () => {
@@ -11,56 +12,56 @@ describe("lib/EncryptedStorage", () => {
 		describe("setItem(key, value)", () => {
 			it("should return no errors if it could store the value", () => {
 				return expect(EncryptedStorage.setItem("key", "value"))
-						.resolves
-						.toBeUndefined();
+					.resolves
+					.toBeUndefined();
 			});
-	
+
 			it("should reject with an error if it could not store the value", () => {
 				RNEncryptedStorage.setItem.mockImplementationOnce(() => Promise.reject(new Error("Set error")));
 
 				return expect(EncryptedStorage.setItem("key", "value"))
-						.rejects
-						.toThrow("Set error");
+					.rejects
+					.toThrow("Set error");
 			});
 		});
-	
+
 		describe("getItem(key)", () => {
 			it("should return the value if it could be retrieved succesfully", () => {
 				return expect(EncryptedStorage.getItem("key"))
-						.resolves
-						.toEqual("{ \"foo\": 1 }");
+					.resolves
+					.toEqual("{ \"foo\": 1 }");
 			});
-	
+
 			it("should return null if no value was found for that key", () => {
 				RNEncryptedStorage.getItem.mockImplementationOnce(() => Promise.resolve(undefined));
-	
+
 				return expect(EncryptedStorage.getItem("key"))
-						.resolves
-						.toBeUndefined();
+					.resolves
+					.toBeUndefined();
 			});
-	
+
 			it("should reject with an error if it could not retrieve the value", () => {
 				RNEncryptedStorage.getItem.mockImplementationOnce(() => Promise.reject(new Error("Get error")));
-				
+
 				return expect(EncryptedStorage.getItem("key"))
-						.rejects
-						.toThrow("Get error");
+					.rejects
+					.toThrow("Get error");
 			});
-		});	
-	
+		});
+
 		describe("removeItem(key)", () => {
 			it("should return no error if it could removed the stored value", () => {
 				return expect(EncryptedStorage.removeItem("key"))
-						.resolves
-						.toBeUndefined();
+					.resolves
+					.toBeUndefined();
 			});
-	
+
 			it("should throw an error if it could not retrieve the stored value", async () => {
 				RNEncryptedStorage.removeItem.mockImplementationOnce(() => Promise.reject(new Error("Remove error")));
-	
+
 				return expect(EncryptedStorage.removeItem("key"))
-						.rejects
-						.toThrow("Remove error");
+					.rejects
+					.toThrow("Remove error");
 			});
 		});
 	});
@@ -72,16 +73,16 @@ describe("lib/EncryptedStorage", () => {
 					expect(error).toBeUndefined();
 				});
 			});
-	
+
 			it("should reject with an error if it could not store the value", () => {
 				RNEncryptedStorage.setItem.mockImplementationOnce(() => Promise.reject(new Error("Set error")));
 
 				EncryptedStorage.setItem("key", "value", error => {
-					expect(error.message).toEqual("Set error");
+					expect(error?.message).toEqual("Set error");
 				});
 			});
 		});
-	
+
 		describe("getItem(key)", () => {
 			it("should return the value if it could be retrieved succesfully", () => {
 				EncryptedStorage.getItem("key", (error, value) => {
@@ -89,38 +90,38 @@ describe("lib/EncryptedStorage", () => {
 					expect(value).toEqual("{ \"foo\": 1 }");
 				});
 			});
-	
+
 			it("should return null if no value was found for that key", () => {
 				RNEncryptedStorage.getItem.mockImplementationOnce(() => Promise.resolve(undefined));
-	
+
 				EncryptedStorage.getItem("key", (error, value) => {
 					expect(error).toBeUndefined();
 					expect(value).toBeUndefined();
 				});
 			});
-	
+
 			it("should reject with an error if it could not retrieve the value", () => {
 				RNEncryptedStorage.getItem.mockImplementationOnce(() => Promise.reject(new Error("Get error")));
-				
+
 				EncryptedStorage.getItem("key", (error, value) => {
-					expect(error.message).toEqual("Get error");
+					expect(error?.message).toEqual("Get error");
 					expect(value).toBeUndefined();
 				});
 			});
-		});	
-	
+		});
+
 		describe("removeItem(key)", () => {
 			it("should return no error if it could remove the stored value", () => {
 				EncryptedStorage.removeItem("key", error => {
 					expect(error).toBeUndefined();
 				});
 			});
-	
+
 			it("should throw an error if it could not retrieve the stored value", () => {
 				RNEncryptedStorage.removeItem.mockImplementationOnce(() => Promise.reject(new Error("Remove error")));
-	
+
 				EncryptedStorage.removeItem("key", error => {
-					expect(error.message).toEqual("Remove error");
+					expect(error?.message).toEqual("Remove error");
 				});
 			});
 		});

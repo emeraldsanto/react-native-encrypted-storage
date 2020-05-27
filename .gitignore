@@ -44,3 +44,6 @@ buck-out/
 
 # JEST
 coverage/
+
+# TYPESCRIPT
+dist/*
