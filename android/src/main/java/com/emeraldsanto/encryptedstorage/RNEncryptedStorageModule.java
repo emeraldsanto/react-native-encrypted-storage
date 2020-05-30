@@ -1,7 +1,9 @@
 package com.emeraldsanto.encryptedstorage;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -23,6 +25,11 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
     public RNEncryptedStorageModule(ReactApplicationContext context) {
         super(context);
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            this.sharedPreferences = context.getSharedPreferences(RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+            return;
+        }
+
         try {
             this.sharedPreferences = EncryptedSharedPreferences.create(
                 RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME,
@@ -34,7 +41,7 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
         }
 
         catch (Exception ex) {
-            Log.w(RNEncryptedStorageModule.NATIVE_MODULE_NAME, String.format("Could not initialize SharedPreferences - %s", ex.getLocalizedMessage()));
+            this.sharedPreferences = context.getSharedPreferences(RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
         }
     }
 
