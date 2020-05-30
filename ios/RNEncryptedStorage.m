@@ -113,6 +113,6 @@ RCT_EXPORT_METHOD(clear:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseReje
         SecItemDelete((__bridge CFDictionaryRef)spec);
     }
     
-    resolve();
+    resolve(nil);
 }
 @end
