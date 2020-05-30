@@ -56,12 +56,28 @@ describe("lib/EncryptedStorage", () => {
 					.toBeUndefined();
 			});
 
-			it("should throw an error if it could not retrieve the stored value", async () => {
+			it("should throw an error if it could not retrieve the stored value", () => {
 				RNEncryptedStorage.removeItem.mockImplementationOnce(() => Promise.reject(new Error("Remove error")));
 
 				return expect(EncryptedStorage.removeItem("key"))
 					.rejects
 					.toThrow("Remove error");
+			});
+		});
+
+		describe("clear()", () => {
+			it("should return no error if it could clear the storage", () => {
+				return expect(EncryptedStorage.clear())
+					.resolves
+					.toBeUndefined();
+			});
+
+			it("should throw an error if it could not clear the storage", () => {
+				RNEncryptedStorage.clear.mockImplementationOnce(() => Promise.reject(new Error("Clear error")));
+
+				return expect(EncryptedStorage.clear())
+					.rejects
+					.toThrow("Clear error");
 			});
 		});
 	});
@@ -122,6 +138,22 @@ describe("lib/EncryptedStorage", () => {
 
 				EncryptedStorage.removeItem("key", error => {
 					expect(error?.message).toEqual("Remove error");
+				});
+			});
+		});
+
+		describe("clear()", () => {
+			it("should return no error if it could clear the storage", () => {
+				EncryptedStorage.clear(error => {
+					expect(error).toBeUndefined();
+				});
+			});
+
+			it("should throw an error if it could not clear the storage", () => {
+				RNEncryptedStorage.clear.mockImplementationOnce(() => Promise.reject(new Error("Clear error")));
+
+				EncryptedStorage.clear(error => {
+					expect(error.message).toEqual("Clear error");
 				});
 			});
 		});
