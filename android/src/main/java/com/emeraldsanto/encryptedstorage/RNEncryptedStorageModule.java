@@ -66,7 +66,7 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
         }
 
         else {
-            promise.reject(new Exception(String.format("An error occured while saving %s", key)));
+            promise.reject(new Exception(String.format("An error occurred while saving %s", key)));
         }
     }
 
@@ -99,6 +99,25 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
 
         else {
             promise.reject(new Exception(String.format("An error occured while removing %s", key)));
+        }
+    }
+
+    public void clear(Promise promise) {
+        if (this.sharedPreferences == null) {
+            promise.reject(new NullPointerException("Could not initialize SharedPreferences"));
+            return;
+        }
+
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        editor.clear();
+        boolean saved = editor.commit();
+
+        if (saved) {
+            promise.resolve(null);
+        }
+
+        else {
+            promise.reject(new Exception("An error occured while clearing SharedPreferences"));
         }
     }
 }
