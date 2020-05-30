@@ -102,6 +102,7 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
     public void clear(Promise promise) {
         if (this.sharedPreferences == null) {
             promise.reject(new NullPointerException("Could not initialize SharedPreferences"));
