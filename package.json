@@ -1,7 +1,7 @@
 {
   "name": "react-native-encrypted-storage",
   "title": "React Native Encrypted Storage",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "A React Native wrapper over SharedPreferences and Keychain to provide a secure alternative to Async Storage",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
