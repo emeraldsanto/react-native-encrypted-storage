@@ -98,6 +98,22 @@ async function removeUserSession() {
 }
 ```
 
+### Error handling
+
+Take the previous example, an error can occur when trying to remove a value which does not exist, or for any other reason. This module forwards the native iOS Security framework error codes to help with debugging.
+
+```js
+async function removeUserSession() {
+    try {
+        await EncryptedStorage.removeItem("user_session");
+    } catch (error) {
+        // There was an error on the native side
+        // You can find out more about this error by using the `error.code` property
+        console.log(error.code); // ex: -25300 (errSecItemNotFound)
+    }
+}
+```
+
 ## Note regarding `Keychain` persistence
 
 You'll notice that the iOS `Keychain` is not cleared when your app is uninstalled, this is the expected behaviour. However, if you do want to achieve a different behaviour, you can use the below snippet to clear the `Keychain` on the first launch of your app.
