@@ -62,6 +62,20 @@ export const App: FC = () => {
         }
     }
 
+    async function clearValues(done: WorkCallback) {
+        try {
+            await EncryptedStorage.clear();
+            Alert.alert("The storage has been successfully cleared");
+        }
+
+        catch (error) {
+            Alert.alert(`The storage could not be cleared - ${error}`);
+        }
+
+        finally {
+            done();
+        }
+    }
 
     return (
         <SafeAreaView style={styles.wrapper}>
@@ -75,6 +89,8 @@ export const App: FC = () => {
                 <ButtonWorker title="Get saved value" onPress={getValue} />
 
                 <ButtonWorker title="Remove saved value" onPress={removeValue} />
+
+                <ButtonWorker title="Clear storage" onPress={clearValues} />
             </View>
         </SafeAreaView>
     );
