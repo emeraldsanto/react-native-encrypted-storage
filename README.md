@@ -34,12 +34,12 @@ $ react-native link react-native-encrypted-storage
 Special note for iOS using `cocoapods`, run:
 
 ```bash
-$ cd ios && pod install && cd ..
+$ npx pod-install
 ```
 
 ## Usage
 
-This module exposes three (3) native functions to store, retrieve and remove a value. They can be used like so:
+This module exposes four (4) native functions to store, retrieve, remove and clear values. They can be used like so:
 
 ### Import
 
@@ -55,10 +55,10 @@ async function storeUserSession() {
         await EncryptedStorage.setItem(
             "user_session",
             JSON.stringify({
-                username : "emeraldsanto",
                 age : 21,
-                languages : ["fr", "en", "de"],
-                token : "ACCESS_TOKEN"
+                token : "ACCESS_TOKEN",
+                username : "emeraldsanto",
+                languages : ["fr", "en", "de"]
             })
         );
 
