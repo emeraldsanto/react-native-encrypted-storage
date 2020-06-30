@@ -1,13 +1,20 @@
 import React, { FC } from "react";
-import { Alert, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, Text } from "react-native";
 import EncryptedStorage from "react-native-encrypted-storage";
 import { ButtonWorker } from "./components/ButtonWorker/ButtonWorker";
 import { WorkCallback } from "./components/ButtonWorker/ButtonWorkerProps";
 
+/**
+ * The key to use when referencing the example value
+ */
 const STORAGE_KEY = "RANDOM_VALUE";
 
 export const App: FC = () => {
 
+    /**
+     * Saves a random number to the device storage
+     * @param {Function} done The function to call when the operation completes 
+     */
     async function setValue(done: WorkCallback) {
         const randomNumber = Math.random();
 
@@ -25,6 +32,10 @@ export const App: FC = () => {
         }
     }
 
+    /**
+     * Retrieves the previously saved number from the device storage
+     * @param {Function} done The function to call when the operation completes 
+     */
     async function getValue(done: WorkCallback) {
         try {
             const savedNumber = await EncryptedStorage.getItem(STORAGE_KEY);
@@ -47,6 +58,10 @@ export const App: FC = () => {
         }
     }
 
+    /**
+     * Removes the previously saved number from the device storage
+     * @param {Function} done The function to call when the operation completes 
+     */
     async function removeValue(done: WorkCallback) {
         try {
             await EncryptedStorage.removeItem(STORAGE_KEY);
@@ -62,6 +77,10 @@ export const App: FC = () => {
         }
     }
 
+    /**
+     * Completely clears all values from the device storage (only those accesible by the app)
+     * @param {Function} done The function to call when the operation completes 
+     */
     async function clearValues(done: WorkCallback) {
         try {
             await EncryptedStorage.clear();
@@ -83,15 +102,13 @@ export const App: FC = () => {
                 Welcome to the Example app!
             </Text>
 
-            <View style={styles.buttons}>
-                <ButtonWorker title="Save random value" onPress={setValue} />
+            <ButtonWorker title="Save random value" onPress={setValue} />
 
-                <ButtonWorker title="Get saved value" onPress={getValue} />
+            <ButtonWorker title="Get saved value" onPress={getValue} />
 
-                <ButtonWorker title="Remove saved value" onPress={removeValue} />
+            <ButtonWorker title="Remove saved value" onPress={removeValue} />
 
-                <ButtonWorker title="Clear storage" onPress={clearValues} />
-            </View>
+            <ButtonWorker title="Clear storage" onPress={clearValues} />
         </SafeAreaView>
     );
 }
@@ -107,8 +124,5 @@ const styles = StyleSheet.create({
         marginVertical: 30,
         textAlign: "center",
         marginHorizontal: 15
-    },
-    buttons: {
-
     }
 });
