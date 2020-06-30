@@ -47,4 +47,6 @@ coverage/
 
 # TYPESCRIPT
 dist/*
+
+# MISC
 *.prefs
