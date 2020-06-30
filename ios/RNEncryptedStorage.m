@@ -10,6 +10,14 @@
 #import <Security/Security.h>
 #import <React/RCTLog.h>
 
+void rejectPromise(NSString *message, NSError *error, RCTPromiseRejectBlock rejecter)
+{
+    NSString* errorCode = [NSString stringWithFormat:@"%ld", error.code];
+    NSString* errorMessage = [NSString stringWithFormat:@"RNEncryptedStorageError: %@", message];
+
+    rejecter(errorCode, errorMessage, error);
+}
+
 @implementation RNEncryptedStorage
 
 + (BOOL)requiresMainQueueSetup
@@ -25,7 +33,8 @@ RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value resolver:(
     
     if (dataFromValue == nil) {
         NSError* error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] code:0 userInfo: nil];
-        return reject(@"parse_error", @"An error occured while parsing value", error);
+        rejectPromise(@"An error occured while parsing value", error, reject);
+        return;
     }
     
     // Prepares the insert query structure
@@ -45,8 +54,8 @@ RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value resolver:(
     }
     
     else {
-        NSError* error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] code:1 userInfo: nil];
-        reject(@"insert_error", @"An error occured while saving value", error);
+        NSError* error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] code:insertStatus userInfo: nil];
+        rejectPromise(@"An error occured while saving value", error, reject);   
     }
 }
 
@@ -72,8 +81,8 @@ RCT_EXPORT_METHOD(getItem:(NSString *)key resolver:(RCTPromiseResolveBlock)resol
     }
     
     else {
-        NSError* error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] code:2 userInfo: nil];
-        reject(@"retrieve_error", @"An error occured while retrieving value", error);
+        NSError* error = [NSError errorWithDomain: [[NSBundle mainBundle] bundleIdentifier] code:getStatus userInfo:nil];
+        rejectPromise(@"An error occured while retrieving value", error, reject);
     }
 }
 
@@ -92,8 +101,8 @@ RCT_EXPORT_METHOD(removeItem:(NSString *)key resolver:(RCTPromiseResolveBlock)re
     }
     
     else {
-        NSError* error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] code:3 userInfo: nil];
-        reject(@"remove_error", @"An error occured while removing", error);
+        NSError* error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] code:removeStatus userInfo: nil];
+        rejectPromise(@"An error occured while removing value", error, reject);
     }
 }
 

@@ -34,12 +34,12 @@ $ react-native link react-native-encrypted-storage
 Special note for iOS using `cocoapods`, run:
 
 ```bash
-$ cd ios && pod install && cd ..
+$ npx pod-install
 ```
 
 ## Usage
 
-This module exposes three (3) native functions to store, retrieve and remove a value. They can be used like so:
+This module exposes four (4) native functions to store, retrieve, remove and clear values. They can be used like so:
 
 ### Import
 
@@ -55,10 +55,10 @@ async function storeUserSession() {
         await EncryptedStorage.setItem(
             "user_session",
             JSON.stringify({
-                username : "emeraldsanto",
                 age : 21,
-                languages : ["fr", "en", "de"],
-                token : "ACCESS_TOKEN"
+                token : "ACCESS_TOKEN",
+                username : "emeraldsanto",
+                languages : ["fr", "en", "de"]
             })
         );
 
@@ -94,6 +94,35 @@ async function removeUserSession() {
         // Congrats! You've just removed your first value!
     } catch (error) {
         // There was an error on the native side
+    }
+}
+```
+
+### Clearing all previously saved values
+
+```js
+async function clearStorage() {
+    try {
+        await EncryptedStorage.clear();
+        // Congrats! You've just cleared the device storage!
+    } catch (error) {
+        // There was an error on the native side
+    }
+}
+```
+
+### Error handling
+
+Take the `removeItem` example, an error can occur when trying to remove a value which does not exist, or for any other reason. This module forwards the native iOS Security framework error codes to help with debugging.
+
+```js
+async function removeUserSession() {
+    try {
+        await EncryptedStorage.removeItem("user_session");
+    } catch (error) {
+        // There was an error on the native side
+        // You can find out more about this error by using the `error.code` property
+        console.log(error.code); // ex: -25300 (errSecItemNotFound)
     }
 }
 ```
