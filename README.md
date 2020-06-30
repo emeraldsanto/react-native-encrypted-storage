@@ -98,9 +98,22 @@ async function removeUserSession() {
 }
 ```
 
+### Clearing all previously saved values
+
+```js
+async function clearStorage() {
+    try {
+        await EncryptedStorage.clear();
+        // Congrats! You've just cleared the device storage!
+    } catch (error) {
+        // There was an error on the native side
+    }
+}
+```
+
 ### Error handling
 
-Take the previous example, an error can occur when trying to remove a value which does not exist, or for any other reason. This module forwards the native iOS Security framework error codes to help with debugging.
+Take the `removeItem` example, an error can occur when trying to remove a value which does not exist, or for any other reason. This module forwards the native iOS Security framework error codes to help with debugging.
 
 ```js
 async function removeUserSession() {
