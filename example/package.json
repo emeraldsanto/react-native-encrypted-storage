@@ -10,7 +10,7 @@
   "dependencies": {
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-encrypted-storage": "github:emeraldsanto/react-native-encrypted-storage#dev"
+    "react-native-encrypted-storage": "2.4.3"
   },
   "devDependencies": {
     "@babel/core": "7.6.2",
