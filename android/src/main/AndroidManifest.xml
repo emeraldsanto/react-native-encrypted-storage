@@ -1,4 +1,8 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.emeraldsanto.encryptedstorage">
+<manifest 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.emeraldsanto.encryptedstorage"
+>
     <!--
     Overrides warning about AndroidX Security package only running on API 23+
     There is a runtime check to make sure that this API is not accessed below API 23
