@@ -14,7 +14,7 @@ import groovy.json.JsonSlurper
 
 def DEFAULT_COMPILE_SDK_VERSION = 29
 def DEFAULT_BUILD_TOOLS_VERSION = '28.0.3'
-def DEFAULT_MIN_SDK_VERSION = 1
+def DEFAULT_MIN_SDK_VERSION = 23
 def DEFAULT_TARGET_SDK_VERSION = 29
 
 def safeExtGet(prop, fallback) {
@@ -35,7 +35,7 @@ buildscript {
             jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:3.6.3'
+            classpath 'com.android.tools.build:gradle:4.0.1'
         }
     }
     repositories {
@@ -53,8 +53,8 @@ android {
     defaultConfig {
         minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
         targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
-        versionCode 40
-        versionName "2.4.4"
+        versionCode 41
+        versionName "3.0.0"
     }
     lintOptions {
         abortOnError false
@@ -80,8 +80,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 
-    // Updating to the stable 1.0.0 release introduces crashes in production
-    implementation "androidx.security:security-crypto:1.0.0-alpha02"
+    implementation "androidx.security:security-crypto:1.1.0-alpha02"
 }
 
 def configureReactNativePom(def pom) {
