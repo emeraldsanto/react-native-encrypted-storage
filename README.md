@@ -186,6 +186,10 @@ static void ClearKeychainIfNecessary() {
 @end
 ```
 
+# Limitations
+
+There seems to be some confusion around the maximum size of items that can be stored, especially on iOS. According to this [StackOverflow question](https://stackoverflow.com/questions/13488793/is-there-any-length-limit-of-string-stored-in-keychain), the actual Keychain limit is much lower than what it should theoretically be. This does not affect Android as the `EncryptedSharedPreferences` API relies on the phone's storage, via XML files.
+
 ## License
 
 MIT
