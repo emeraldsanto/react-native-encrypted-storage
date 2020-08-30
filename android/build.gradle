@@ -35,7 +35,7 @@ buildscript {
             jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:3.6.3'
+            classpath 'com.android.tools.build:gradle:4.0.1'
         }
     }
     repositories {
@@ -80,8 +80,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 
-    // Updating to the stable 1.0.0 release introduces crashes in production
-    implementation "androidx.security:security-crypto:1.0.0-alpha02"
+    implementation "androidx.security:security-crypto:1.1.0-alpha02"
 }
 
 def configureReactNativePom(def pom) {
