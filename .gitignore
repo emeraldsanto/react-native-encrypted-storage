@@ -45,5 +45,8 @@ buck-out/
 # JEST
 coverage/
 
+# TypeScript
+dist/
+
 # MISC
 *.prefs
