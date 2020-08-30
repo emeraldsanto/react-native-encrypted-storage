@@ -3,9 +3,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.emeraldsanto.encryptedstorage"
 >
-    <!--
-    Overrides warning about AndroidX Security package only running on API 23+
-    There is a runtime check to make sure that this API is not accessed below API 23
-    -->
-    <uses-sdk tools:overrideLibrary="androidx.security" />
 </manifest>
