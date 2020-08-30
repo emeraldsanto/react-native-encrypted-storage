@@ -22,11 +22,6 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
     public RNEncryptedStorageModule(ReactApplicationContext context) {
         super(context);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            this.sharedPreferences = context.getSharedPreferences(RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
-            return;
-        }
-
         try {
             this.sharedPreferences = EncryptedSharedPreferences.create(
                 RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME,
