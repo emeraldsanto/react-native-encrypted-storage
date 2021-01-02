@@ -167,7 +167,7 @@ describe('lib/EncryptedStorage', () => {
         );
 
         EncryptedStorage.clear((error) => {
-          expect(error.message).toEqual('Clear error');
+          expect(error?.message).toEqual('Clear error');
         });
       });
     });
