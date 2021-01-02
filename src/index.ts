@@ -1,1 +1,1 @@
-export { default } from "./EncryptedStorage";
+export { default } from './EncryptedStorage';

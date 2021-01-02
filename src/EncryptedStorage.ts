@@ -1,8 +1,10 @@
-import { NativeModules } from "react-native";
+/* eslint-disable no-dupe-class-members */
+
+import { NativeModules } from 'react-native';
 const { RNEncryptedStorage } = NativeModules;
 
 if (!RNEncryptedStorage) {
-  throw new Error("RNEncryptedStorage is undefined");
+  throw new Error('RNEncryptedStorage is undefined');
 }
 
 export type StorageErrorCallback = (error?: Error) => void;

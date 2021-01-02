@@ -8,9 +8,9 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "babel-plugin-module-resolver": "^4.1.0",
     "react": "16.11.0",
-    "react-native": "0.62.2",
-    "react-native-encrypted-storage": "emeraldsanto/react-native-encrypted-storage#dev"
+    "react-native": "0.62.2"
   },
   "devDependencies": {
     "@babel/core": "7.6.2",
