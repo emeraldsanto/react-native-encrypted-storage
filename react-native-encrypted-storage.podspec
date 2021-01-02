@@ -6,18 +6,16 @@ Pod::Spec.new do |s|
   s.name         = "react-native-encrypted-storage"
   s.version      = package["version"]
   s.summary      = package["description"]
-  s.description  = <<-DESC
-                  React Native wrapper around SharedPreferences and Keychain to provide a secure alternative to Async Storage
-                   DESC
-  s.homepage     = "https://github.com/emeraldsanto/react-native-encrypted-storage"
-  s.license      = "MIT"
-  s.authors      = { "Yanick" => "yanick.belanger@yahoo.com" }
-  s.platforms    = { :ios => "9.0" }
+  s.homepage     = package["homepage"]
+  s.license      = package["license"]
+  s.authors      = package["author"]
+
+  s.platforms    = { :ios => "10.0" }
   s.source       = { :git => "https://github.com/emeraldsanto/react-native-encrypted-storage.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,swift}"
-  s.requires_arc = true
+  
+  s.source_files = "ios/**/*.{h,m,mm,swift}"
+  
 
-  s.dependency "React"
+  s.dependency "React-Core"
 end
-
