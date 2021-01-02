@@ -1,21 +1,15 @@
 buildscript {
-  // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-  def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['EncryptedStorage_kotlinVersion']
-
   repositories {
     google()
     jcenter()
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.1'
-    // noinspection DifferentKotlinGradleVersion
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath 'com.android.tools.build:gradle:4.1.1'
   }
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 
 def getExtOrDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['EncryptedStorage_' + name]
@@ -29,13 +23,13 @@ android {
   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
   buildToolsVersion getExtOrDefault('buildToolsVersion')
   defaultConfig {
-    minSdkVersion 16
+    minSdkVersion 23
     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
-    versionCode 1
-    versionName "1.0"
-    
+    versionCode 300
+    versionName "3.0.0"
+
   }
-  
+
   buildTypes {
     release {
       minifyEnabled false
@@ -121,12 +115,9 @@ repositories {
   }
 }
 
-def kotlin_version = getExtOrDefault('kotlinVersion')
-
 dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-  implementation "androidx.security:security-crypto:1.1.0-alpha02"
+  implementation "androidx.security:security-crypto:1.1.0-alpha03"
 }
