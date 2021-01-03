@@ -12,14 +12,15 @@
     "lib",
     "android",
     "ios",
-    "cpp",
     "react-native-encrypted-storage.podspec",
-    "!lib/typescript/example",
     "!android/build",
+    "!android/.idea",
+    "!android/.gradle",
+    "!android/.settings",
+    "!android/local.properties",
     "!ios/build",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__"
+    "!**/__mocks__",
+    "!**/*.test.*"
   ],
   "scripts": {
     "test": "jest",
