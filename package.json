@@ -1,10 +1,10 @@
 {
   "name": "react-native-encrypted-storage",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A React Native wrapper over SharedPreferences and Keychain to provide a secure alternative to Async Storage",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
@@ -12,14 +12,15 @@
     "lib",
     "android",
     "ios",
-    "cpp",
     "react-native-encrypted-storage.podspec",
-    "!lib/typescript/example",
     "!android/build",
+    "!android/.idea",
+    "!android/.gradle",
+    "!android/.settings",
+    "!android/local.properties",
     "!ios/build",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__"
+    "!**/__mocks__",
+    "!**/*.test.*"
   ],
   "scripts": {
     "test": "jest",
