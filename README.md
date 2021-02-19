@@ -3,7 +3,12 @@ React Native wrapper around SharedPreferences and Keychain to provide a secure a
 
 ## Why ?
 
-[Async Storage](https://github.com/react-native-community/async-storage) is great but it lacks security. This is less than ideal when storing sensitive data such as access tokens, payment information and so on. This module aims to solve this problem by providing a wrapper around Android's `SharedPreferences` and iOS' `Keychain`, complete with support for TypeScript.
+[Async Storage](https://github.com/react-native-community/async-storage) is great but it lacks security. This is less than ideal when storing sensitive data such as access tokens, payment information and so on. This module aims to solve this problem by providing a wrapper around Android's `EncryptedSharedPreferences` and iOS' `Keychain`, complete with support for TypeScript.
+
+## Version Requirements
+
+- Android API 21+ (5.0)
+- iOS 2.0
 
 ## Installation
 
