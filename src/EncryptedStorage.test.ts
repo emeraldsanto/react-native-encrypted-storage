@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
-import EncryptedStorage from './EncryptedStorage';
+import EncryptedStorage, { EncryptedStorageOptions } from './EncryptedStorage';
 
 const { RNEncryptedStorage } = NativeModules;
 
@@ -87,9 +87,11 @@ describe('lib/EncryptedStorage', () => {
   });
 
   describe('using callbacks', () => {
+    const options: EncryptedStorageOptions = {};
+
     describe('setItem(key, value)', () => {
       it('should return no errors if it could store the value', () => {
-        EncryptedStorage.setItem('key', 'value', (error) => {
+        EncryptedStorage.setItem('key', 'value', options, (error) => {
           expect(error).toBeUndefined();
         });
       });
@@ -99,7 +101,7 @@ describe('lib/EncryptedStorage', () => {
           Promise.reject(new Error('Set error'))
         );
 
-        EncryptedStorage.setItem('key', 'value', (error) => {
+        EncryptedStorage.setItem('key', 'value', options, (error) => {
           expect(error?.message).toEqual('Set error');
         });
       });
@@ -107,7 +109,7 @@ describe('lib/EncryptedStorage', () => {
 
     describe('getItem(key)', () => {
       it('should return the value if it could be retrieved succesfully', () => {
-        EncryptedStorage.getItem('key', (error, value) => {
+        EncryptedStorage.getItem('key', options, (error, value) => {
           expect(error).toBeUndefined();
           expect(value).toEqual('{ "foo": 1 }');
         });
@@ -118,7 +120,7 @@ describe('lib/EncryptedStorage', () => {
           Promise.resolve(undefined)
         );
 
-        EncryptedStorage.getItem('key', (error, value) => {
+        EncryptedStorage.getItem('key', options, (error, value) => {
           expect(error).toBeUndefined();
           expect(value).toBeUndefined();
         });
@@ -129,7 +131,7 @@ describe('lib/EncryptedStorage', () => {
           Promise.reject(new Error('Get error'))
         );
 
-        EncryptedStorage.getItem('key', (error, value) => {
+        EncryptedStorage.getItem('key', options, (error, value) => {
           expect(error?.message).toEqual('Get error');
           expect(value).toBeUndefined();
         });
@@ -138,7 +140,7 @@ describe('lib/EncryptedStorage', () => {
 
     describe('removeItem(key)', () => {
       it('should return no error if it could remove the stored value', () => {
-        EncryptedStorage.removeItem('key', (error) => {
+        EncryptedStorage.removeItem('key', options, (error) => {
           expect(error).toBeUndefined();
         });
       });
@@ -148,7 +150,7 @@ describe('lib/EncryptedStorage', () => {
           Promise.reject(new Error('Remove error'))
         );
 
-        EncryptedStorage.removeItem('key', (error) => {
+        EncryptedStorage.removeItem('key', options, (error) => {
           expect(error?.message).toEqual('Remove error');
         });
       });

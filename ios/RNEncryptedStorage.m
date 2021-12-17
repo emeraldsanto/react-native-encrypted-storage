@@ -25,10 +25,33 @@ void rejectPromise(NSString *message, NSError *error, RCTPromiseRejectBlock reje
     return NO;
 }
 
+CFStringRef getKeychainAccessibility(NSDictionary *options)
+{
+    id keychainAccessibility = options[@"keychainAccessibility"];
+    if (keychainAccessibility == nil) {
+        return kSecAttrAccessibleAfterFirstUnlock;
+    }
+        
+    NSDictionary *valueMap = @{
+        @"kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly": (__bridge NSString *)kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+        @"kSecAttrAccessibleWhenUnlockedThisDeviceOnly": (__bridge NSString *)kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+        @"kSecAttrAccessibleWhenUnlocked": (__bridge NSString *)kSecAttrAccessibleWhenUnlocked,
+        @"kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly": (__bridge NSString *)kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
+        @"kSecAttrAccessibleAfterFirstUnlock": (__bridge NSString *)kSecAttrAccessibleAfterFirstUnlock,
+        
+    };
+    
+    NSString *value = valueMap[keychainAccessibility];
+    
+    return (__bridge CFStringRef)value;
+}
+
+
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value withOptions:(NSDictionary *) options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
+    CFStringRef keychainAccessibility = getKeychainAccessibility(options);
     NSData* dataFromValue = [value dataUsingEncoding:NSUTF8StringEncoding];
     
     if (dataFromValue == nil) {
@@ -41,7 +64,8 @@ RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value resolver:(
     NSDictionary* storeQuery = @{
         (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrAccount : key,
-        (__bridge id)kSecValueData : dataFromValue
+        (__bridge id)kSecValueData : dataFromValue,
+        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility
     };
     
     // Deletes the existing item prior to inserting the new one
@@ -59,13 +83,16 @@ RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value resolver:(
     }
 }
 
-RCT_EXPORT_METHOD(getItem:(NSString *)key resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(getItem:(NSString *)key withOptions:(NSDictionary *) options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
+    CFStringRef keychainAccessibility = getKeychainAccessibility(options);
+    
     NSDictionary* getQuery = @{
         (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrAccount : key,
         (__bridge id)kSecReturnData : (__bridge id)kCFBooleanTrue,
-        (__bridge id)kSecMatchLimit : (__bridge id)kSecMatchLimitOne
+        (__bridge id)kSecMatchLimit : (__bridge id)kSecMatchLimitOne,
+        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility
     };
     
     CFTypeRef dataRef = NULL;
@@ -86,12 +113,15 @@ RCT_EXPORT_METHOD(getItem:(NSString *)key resolver:(RCTPromiseResolveBlock)resol
     }
 }
 
-RCT_EXPORT_METHOD(removeItem:(NSString *)key resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(removeItem:(NSString *)key withOptions:(NSDictionary *) options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
+    CFStringRef keychainAccessibility = getKeychainAccessibility(options);
+    
     NSDictionary* removeQuery = @{
         (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrAccount : key,
-        (__bridge id)kSecReturnData : (__bridge id)kCFBooleanTrue
+        (__bridge id)kSecReturnData : (__bridge id)kCFBooleanTrue,
+        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility
     };
     
     OSStatus removeStatus = SecItemDelete((__bridge CFDictionaryRef)removeQuery);
