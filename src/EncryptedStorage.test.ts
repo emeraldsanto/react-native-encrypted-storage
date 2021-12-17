@@ -158,7 +158,7 @@ describe('lib/EncryptedStorage', () => {
 
     describe('clear()', () => {
       it('should return no error if it could clear the storage', () => {
-        EncryptedStorage.clear((error) => {
+        EncryptedStorage.clear(options, (error) => {
           expect(error).toBeUndefined();
         });
       });
@@ -168,7 +168,7 @@ describe('lib/EncryptedStorage', () => {
           Promise.reject(new Error('Clear error'))
         );
 
-        EncryptedStorage.clear((error) => {
+        EncryptedStorage.clear(options, (error) => {
           expect(error?.message).toEqual('Clear error');
         });
       });

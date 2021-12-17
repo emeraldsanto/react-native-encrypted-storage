@@ -7,36 +7,53 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+
+import com.facebook.react.bridge.ReadableMap;
 
 public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
 
     private static final String NATIVE_MODULE_NAME = "RNEncryptedStorage";
-    private static final String SHARED_PREFERENCES_FILENAME = "RN_ENCRYPTED_STORAGE_SHARED_PREF";
 
     private SharedPreferences sharedPreferences;
+    private MasterKey masterKey;
+
+    private String getStorageName(ReadableMap options) {
+      String bundleId = this.getReactApplicationContext().getPackageName();
+      String storageName = options.hasKey("storageName") ?
+        options.getString("storageName") : bundleId;
+      return storageName;
+    }
+
+    private void createSharedPreferences(ReadableMap options) {
+      ReactContext reactContext = this.getReactApplicationContext();
+      String storageName = this.getStorageName(options);
+
+      try {
+        this.sharedPreferences = EncryptedSharedPreferences.create(
+          reactContext,
+          storageName,
+          this.masterKey,
+          EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+          EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        );
+      } catch (Exception ex) {
+        Log.e(NATIVE_MODULE_NAME, "Failed to create encrypted shared preferences! Failing back to standard SharedPreferences", ex);
+        this.sharedPreferences = reactContext.getSharedPreferences(storageName, Context.MODE_PRIVATE);
+      }
+    }
 
     public RNEncryptedStorageModule(ReactApplicationContext context) {
         super(context);
 
         try {
-            MasterKey key = new MasterKey.Builder(context)
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                    .build();
-
-            this.sharedPreferences = EncryptedSharedPreferences.create(
-                context,
-                RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME,
-                key,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        }
-
-        catch (Exception ex) {
-            Log.e(NATIVE_MODULE_NAME, "Failed to create encrypted shared preferences! Failing back to standard SharedPreferences", ex);
-            this.sharedPreferences = context.getSharedPreferences(RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+          this.masterKey = new MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build();
+        } catch (Exception ex) {
+          Log.e(NATIVE_MODULE_NAME, "Failed to create MasterKey", ex);
         }
     }
 
@@ -46,7 +63,9 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setItem(String key, String value, Promise promise) {
+    public void setItem(String key, String value, ReadableMap options, Promise promise) {
+        this.createSharedPreferences(options);
+
         if (this.sharedPreferences == null) {
             promise.reject(new NullPointerException("Could not initialize SharedPreferences"));
             return;
@@ -66,7 +85,9 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getItem(String key, Promise promise) {
+    public void getItem(String key, ReadableMap options, Promise promise) {
+        this.createSharedPreferences(options);
+
         if (this.sharedPreferences == null) {
             promise.reject(new NullPointerException("Could not initialize SharedPreferences"));
             return;
@@ -78,7 +99,9 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void removeItem(String key, Promise promise) {
+    public void removeItem(String key, ReadableMap options, Promise promise) {
+        this.createSharedPreferences(options);
+
         if (this.sharedPreferences == null) {
             promise.reject(new NullPointerException("Could not initialize SharedPreferences"));
             return;
@@ -98,7 +121,9 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void clear(Promise promise) {
+    public void clear(ReadableMap options, Promise promise) {
+        this.createSharedPreferences(options);
+
         if (this.sharedPreferences == null) {
             promise.reject(new NullPointerException("Could not initialize SharedPreferences"));
             return;

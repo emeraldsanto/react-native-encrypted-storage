@@ -46,12 +46,20 @@ CFStringRef getKeychainAccessibility(NSDictionary *options)
     return (__bridge CFStringRef)value;
 }
 
+NSString *getKeychainService(NSDictionary *options)
+{
+    id keychainService = options[@"storageName"];
+    if (keychainService == nil) {
+        return [[NSBundle mainBundle] bundleIdentifier];
+    }
+    return keychainService;
+}
+
 
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value withOptions:(NSDictionary *) options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    CFStringRef keychainAccessibility = getKeychainAccessibility(options);
     NSData* dataFromValue = [value dataUsingEncoding:NSUTF8StringEncoding];
     
     if (dataFromValue == nil) {
@@ -61,11 +69,14 @@ RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value withOption
     }
     
     // Prepares the insert query structure
+    CFStringRef keychainAccessibility = getKeychainAccessibility(options);
+    NSString *keychainService = getKeychainService(options);
     NSDictionary* storeQuery = @{
         (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrAccount : key,
         (__bridge id)kSecValueData : dataFromValue,
-        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility
+        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility,
+        (__bridge id)kSecAttrService: keychainService
     };
     
     // Deletes the existing item prior to inserting the new one
@@ -86,13 +97,14 @@ RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value withOption
 RCT_EXPORT_METHOD(getItem:(NSString *)key withOptions:(NSDictionary *) options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     CFStringRef keychainAccessibility = getKeychainAccessibility(options);
-    
+    NSString *keychainService = getKeychainService(options);
     NSDictionary* getQuery = @{
         (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrAccount : key,
         (__bridge id)kSecReturnData : (__bridge id)kCFBooleanTrue,
         (__bridge id)kSecMatchLimit : (__bridge id)kSecMatchLimitOne,
-        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility
+        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility,
+        (__bridge id)kSecAttrService: keychainService
     };
     
     CFTypeRef dataRef = NULL;
@@ -116,12 +128,13 @@ RCT_EXPORT_METHOD(getItem:(NSString *)key withOptions:(NSDictionary *) options r
 RCT_EXPORT_METHOD(removeItem:(NSString *)key withOptions:(NSDictionary *) options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     CFStringRef keychainAccessibility = getKeychainAccessibility(options);
-    
+    NSString *keychainService = getKeychainService(options);
     NSDictionary* removeQuery = @{
         (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrAccount : key,
         (__bridge id)kSecReturnData : (__bridge id)kCFBooleanTrue,
-        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility
+        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility,
+        (__bridge id)kSecAttrService: keychainService
     };
     
     OSStatus removeStatus = SecItemDelete((__bridge CFDictionaryRef)removeQuery);
@@ -136,7 +149,7 @@ RCT_EXPORT_METHOD(removeItem:(NSString *)key withOptions:(NSDictionary *) option
     }
 }
 
-RCT_EXPORT_METHOD(clear:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(clear:(NSDictionary *) options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSArray *secItemClasses = @[
         (__bridge id)kSecClassGenericPassword,
@@ -146,9 +159,14 @@ RCT_EXPORT_METHOD(clear:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseReje
         (__bridge id)kSecClassIdentity
     ];
     
+    NSString *keychainService = getKeychainService(options);
+    
     // Maps through all Keychain classes and deletes all items that match
     for (id secItemClass in secItemClasses) {
-        NSDictionary *spec = @{(__bridge id)kSecClass: secItemClass};
+        NSDictionary *spec = @{
+            (__bridge id)kSecClass: secItemClass,
+            (__bridge id)kSecAttrService: keychainService
+        };
         SecItemDelete((__bridge CFDictionaryRef)spec);
     }
     
