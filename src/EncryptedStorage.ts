@@ -1,7 +1,7 @@
 /* eslint-disable no-dupe-class-members */
 
 import { NativeModules } from 'react-native';
-import { keychainAccessibility } from './constants';
+import { KeychainAccessibility } from './constants';
 
 const { RNEncryptedStorage } = NativeModules;
 
@@ -9,7 +9,7 @@ if (!RNEncryptedStorage) {
   throw new Error('RNEncryptedStorage is undefined');
 }
 
-type KeychainAccessibilityKeys = keyof typeof keychainAccessibility;
+type KeychainAccessibilityKeys = keyof typeof KeychainAccessibility;
 
 export type EncryptedStorageOptions = {
   /**
@@ -21,7 +21,7 @@ export type EncryptedStorageOptions = {
    *
    * Default value: `kSecAttrAccessibleAfterFirstUnlock`
    */
-  keychainAccessibility?: typeof keychainAccessibility[KeychainAccessibilityKeys];
+  keychainAccessibility?: typeof KeychainAccessibility[KeychainAccessibilityKeys];
   /**
    * A string for identifying a set of storage items. Should not contain path separators.
    *

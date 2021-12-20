@@ -1,7 +1,7 @@
 /**
  * Values you use with the `kSecAttrAccessible` attribute key, listed from most to least restrictive.
  */
-export const keychainAccessibility = {
+export const KeychainAccessibility = {
   /**
    * The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device.
    */
