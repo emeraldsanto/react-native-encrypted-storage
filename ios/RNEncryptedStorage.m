@@ -96,15 +96,17 @@ RCT_EXPORT_METHOD(setItem:(NSString *)key withValue:(NSString *)value withOption
 
 RCT_EXPORT_METHOD(getItem:(NSString *)key withOptions:(NSDictionary *) options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    CFStringRef keychainAccessibility = getKeychainAccessibility(options);
     NSString *keychainService = getKeychainService(options);
+    /*
+         The unique key for kSecClassGenericPassword is composed of: kSecAttrAccount and kSecAttrService
+         https://stackoverflow.com/a/22519700
+     */
     NSDictionary* getQuery = @{
         (__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrAccount : key,
+        (__bridge id)kSecAttrService: keychainService,
         (__bridge id)kSecReturnData : (__bridge id)kCFBooleanTrue,
-        (__bridge id)kSecMatchLimit : (__bridge id)kSecMatchLimitOne,
-        (__bridge id)kSecAttrAccessible: (__bridge id)keychainAccessibility,
-        (__bridge id)kSecAttrService: keychainService
+        (__bridge id)kSecMatchLimit : (__bridge id)kSecMatchLimitOne
     };
     
     CFTypeRef dataRef = NULL;
