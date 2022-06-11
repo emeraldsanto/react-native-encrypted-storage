@@ -6,8 +6,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-const EncryptedStorage = NativeModules.EncryptedStorage
-  ? NativeModules.EncryptedStorage
+const EncryptedStorage = NativeModules.RNEncryptedStorage
+  ? NativeModules.RNEncryptedStorage
   : new Proxy(
       {},
       {
@@ -19,4 +19,8 @@ const EncryptedStorage = NativeModules.EncryptedStorage
 
 export function multiply(a: number, b: number): Promise<number> {
   return EncryptedStorage.multiply(a, b);
+}
+
+export function getAllKeys(): Promise<Array<string>> {
+  return EncryptedStorage.getAllKeys();
 }
