@@ -1,6 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 
-// type StorageErrorCallback = (error?: Error) => void;
+type StorageErrorCallback = (error?: Error) => void;
 type StorageValueCallback<T> = (error?: Error, value?: T) => void;
 
 const LINKING_ERROR =
@@ -28,5 +28,17 @@ export function getAllKeys(cb?: StorageValueCallback<Array<string>>) {
       .catch(cb);
   } else {
     return EncryptedStorage.getAllKeys();
+  }
+}
+
+export function multiSet(items: Array<[string, string]>): Promise<void>;
+export function multiSet(items: Array<[string, string]>, cb: StorageErrorCallback): void;
+export function multiSet(items: Array<[string, string]>, cb?: StorageErrorCallback) {
+  if (cb) {
+    void EncryptedStorage.multiSet(items)
+      .then(cb)
+      .catch(cb);
+  } else {
+    return EncryptedStorage.multiSet(items);
   }
 }
