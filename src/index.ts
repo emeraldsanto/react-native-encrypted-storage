@@ -43,6 +43,20 @@ export function setItem(key: string, value: string, cb?: StorageErrorCallback) {
   }
 }
 
+export function multiGet(keys: Array<string>): Promise<Array<string>>;
+export function multiGet(keys: Array<string>, cb: StorageValueCallback<Array<string>>): void;
+export function multiGet(keys: Array<string>, cb?: StorageValueCallback<Array<string>>) {
+  const promise = EncryptedStorage.multiGet(keys);
+
+  if (cb) {
+    void promise
+      .then((output: Array<string>) => cb(undefined, output))
+      .catch(cb);
+  } else {
+    return promise;
+  }
+}
+
 export function multiSet(items: Array<[string, string]>): Promise<void>;
 export function multiSet(items: Array<[string, string]>, cb: StorageErrorCallback): void;
 export function multiSet(items: Array<[string, string]>, cb?: StorageErrorCallback) {

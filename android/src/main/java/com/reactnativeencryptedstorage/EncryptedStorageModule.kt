@@ -62,6 +62,21 @@ class EncryptedStorageModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  @ReactMethod
+  fun multiGet(keys: ReadableArray, promise: Promise) {
+    try {
+      val values: WritableArray = WritableNativeArray()
+
+      for (index in 0 until keys.size()) {
+        val value = this.sharedPreferences.getString(keys.getString(index), null)
+        values.pushString(value)
+      }
+
+      promise.resolve(values)
+    } catch (ex: Exception) {
+      promise.reject(ex)
+    }
+  }
 
   @ReactMethod
   fun multiSet(items: ReadableArray, promise: Promise) {
