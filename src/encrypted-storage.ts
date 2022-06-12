@@ -108,6 +108,18 @@ function multiRemove(keys: Array<string>, cb?: StorageErrorCallback) {
   }
 }
 
+function clear(): Promise<void>
+function clear(cb: StorageErrorCallback): void
+function clear(cb?: StorageErrorCallback) {
+  const promise = module.clear();
+
+  if (cb) {
+    void promise.then(cb).catch(cb);
+  } else {
+    return promise;
+  }
+}
+
 export const EncryptedStorage = {
   getAllKeys,
   getItem,
@@ -116,4 +128,5 @@ export const EncryptedStorage = {
   multiGet,
   multiSet,
   multiRemove,
+  clear,
 }

@@ -12,8 +12,8 @@ import com.facebook.react.bridge.*
 class EncryptedStorageModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
   companion object {
-    private val NATIVE_MODULE_NAME = "EncryptedStorage"
-    private val SHARED_PREFERENCES_FILENAME = "RN_ENCRYPTED_STORAGE_SHARED_PREF"
+    private const val NATIVE_MODULE_NAME = "EncryptedStorage"
+    private const val SHARED_PREFERENCES_FILENAME = "RN_ENCRYPTED_STORAGE_SHARED_PREF"
   }
 
   private var sharedPreferences: SharedPreferences
@@ -121,6 +121,21 @@ class EncryptedStorageModule(reactContext: ReactApplicationContext) :
       }
     } catch (ex: Exception) {
       promise.reject(ex)
+    }
+  }
+
+  @ReactMethod
+  fun clear(promise: Promise) {
+    val editor = this.sharedPreferences.edit()
+
+    editor.clear()
+
+    val saved = editor.commit()
+
+    if (saved) {
+      promise.resolve(null);
+    } else {
+      promise.reject(Exception("An error occurred while clearing SharedPreferences"));
     }
   }
 }
