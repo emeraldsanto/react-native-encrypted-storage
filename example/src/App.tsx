@@ -1,31 +1,26 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import { StyleSheet, View, Text, ActivityIndicator, Button } from 'react-native';
+import EncryptedStorage, { useEncryptedStorage } from 'react-native-encrypted-storage';
 
 export default function App() {
-  const [result, setResult] = React.useState<Array<string>>([]);
-
-  React.useEffect(() => {
-    EncryptedStorage.multiSet([
-      ['one', 'two'],
-      ['three', 'four'],
-      ['five', 'six']
-    ]).then(() => {
-      EncryptedStorage.getAllKeys().then((keys) => {
-        console.log('All keys', keys)
-        EncryptedStorage.clear().then(() => {
-          EncryptedStorage.getAllKeys().then((remaining) => {
-            console.log('Remaining', remaining)
-          })
-        })
-      })
-    })
-  }, []);
+  const { value, error, loading, setItem, removeItem } = useEncryptedStorage('some-key');
 
   return (
     <View style={styles.container}>
-      <Text>Result: {JSON.stringify(result)}</Text>
+      {loading ? (
+       <ActivityIndicator />
+      ) : error ? (
+        <Text>Error: {JSON.stringify(error)}</Text>
+      ) : value ? (
+        <Text>Result: {value}</Text>
+      ) : (
+        <Text>No value for key some-key</Text>
+      )}
+
+      <Button title='Set a value' onPress={() => setItem(Math.random().toString())} />
+
+      <Button title='Remove a value' onPress={removeItem} />
     </View>
   );
 }
