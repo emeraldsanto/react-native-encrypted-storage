@@ -15,14 +15,14 @@ export function useEncryptedStorage(key: string) {
     (x: string) => EncryptedStorage.getItem(x)
   );
 
-  const setItem = useCallback((value: string) => {
-    void mutate(
+  const setItem = useCallback(async (value: string) => {
+    await mutate(
       EncryptedStorage.setItem(key, value).then(() => value)
     );
   }, [key, mutate]);
 
-  const removeItem = useCallback(() => {
-    void mutate(
+  const removeItem = useCallback(async () => {
+    mutate(
       EncryptedStorage.removeItem(key).then(() => null)
     );
   }, [key, mutate]);
