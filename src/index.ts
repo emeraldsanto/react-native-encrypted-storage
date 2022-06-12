@@ -1,7 +1,7 @@
 import { NativeModules, Platform } from 'react-native';
 
-type StorageErrorCallback = (error?: Error) => void;
-type StorageValueCallback<T> = (error?: Error, value?: T) => void;
+type StorageErrorCallback = (error: Error | null) => void;
+type StorageValueCallback<T> = (error: Error | null, value?: T) => void;
 
 const LINKING_ERROR =
   `The package 'react-native-encrypted-storage' doesn't seem to be linked. Make sure: \n\n` +
@@ -24,10 +24,25 @@ export function getAllKeys(cb: StorageValueCallback<Array<string>>): void;
 export function getAllKeys(cb?: StorageValueCallback<Array<string>>) {
   if (cb) {
     void EncryptedStorage.getAllKeys()
-      .then((output: Array<string>) => cb(undefined, output))
+      .then((output: Array<string>) => cb(null, output))
       .catch(cb);
   } else {
     return EncryptedStorage.getAllKeys();
+  }
+}
+
+export function getItem(key: string): Promise<string>;
+export function getItem(key: string, cb: StorageValueCallback<string>): void;
+export function getItem(key: string, cb?: StorageValueCallback<string>) {
+  const promise = EncryptedStorage.multiGet([key]);
+
+  if (cb) {
+    void promise
+      .then((output: Array<string>) => cb(null, output[0]))
+      .catch(cb);
+  } else {
+    return promise
+      .then((output: Array<string>) => output[0]);
   }
 }
 
@@ -50,7 +65,7 @@ export function multiGet(keys: Array<string>, cb?: StorageValueCallback<Array<st
 
   if (cb) {
     void promise
-      .then((output: Array<string>) => cb(undefined, output))
+      .then((output: Array<string>) => cb(null, output))
       .catch(cb);
   } else {
     return promise;
