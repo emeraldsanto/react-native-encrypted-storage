@@ -6,8 +6,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-const EncryptedStorage = NativeModules.RNEncryptedStorage
-  ? NativeModules.RNEncryptedStorage
+const EncryptedStorage = NativeModules.EncryptedStorage
+  ? NativeModules.EncryptedStorage
   : new Proxy(
       {},
       {
