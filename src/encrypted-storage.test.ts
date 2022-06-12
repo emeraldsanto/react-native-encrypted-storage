@@ -328,4 +328,46 @@ describe('encrypted-storage.ts', () => {
       });
     });
   });
+
+  describe('multiRemove', () => {
+    describe('when the native module throws an error', () => {
+      const exception = new Error('Yo!');
+
+      it('should throw the error', () => {
+        jest.mocked(module.multiRemove).mockRejectedValueOnce(exception);
+
+        return expect(EncryptedStorage.multiRemove(['some-key', 'other-key']))
+          .rejects
+          .toStrictEqual(exception);
+      });
+
+      it('should provide the error and a null value to the callback', (done) => {
+        jest.mocked(module.multiRemove).mockRejectedValueOnce(exception);
+
+        EncryptedStorage.multiRemove(['some-key', 'other-key'], (error) => {
+          expect(error).toStrictEqual(exception);
+          done();
+        });
+      });
+    });
+
+    describe('when the native module succeeds', () => {
+      it('should return null', () => {
+        jest.mocked(module.multiRemove).mockResolvedValueOnce(null);
+
+        return expect(EncryptedStorage.multiRemove(['some-key', 'other-key']))
+          .resolves
+          .toStrictEqual(null);
+      });
+
+      it('should provide no error to the callback', (done) => {
+        jest.mocked(module.multiRemove).mockResolvedValueOnce(null);
+
+        EncryptedStorage.multiRemove(['some-key', 'other-key'], (error) => {
+          expect(error).toBeNull();
+          done();
+        });
+      });
+    });
+  });
 });
