@@ -25,7 +25,7 @@ function getAllKeys(cb?: StorageValueCallback<Array<string>>) {
   if (cb) {
     void module.getAllKeys()
       .then((output: Array<string>) => cb(null, output))
-      .catch(cb);
+      .catch((error: Error) => cb(error, null));
   } else {
     return module.getAllKeys();
   }
