@@ -64,12 +64,12 @@ function getItem(key: string, cb?: StorageValueCallback<string>) {
  */
 function setItem(key: string, value: string): Promise<void>;
 
-  /**
-   * Writes data to the disk, using SharedPreferences or KeyChain, depending on the platform.
-   * @param {string} key - A string that will be associated to the value for later retrieval.
-   * @param {string} value - The data to store.
-   * @param {Function} cb - The function to call when the operation completes.
-   */
+/**
+ * Writes data to the disk, using SharedPreferences or KeyChain, depending on the platform.
+ * @param {string} key - A string that will be associated to the value for later retrieval.
+ * @param {string} value - The data to store.
+ * @param {Function} cb - The function to call when the operation completes.
+ */
 function setItem(key: string, value: string, cb: StorageErrorCallback): void;
 
 function setItem(key: string, value: string, cb?: StorageErrorCallback) {
