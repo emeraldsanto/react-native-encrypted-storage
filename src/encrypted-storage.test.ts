@@ -221,4 +221,57 @@ describe('encrypted-storage.ts', () => {
       });
     });
   });
+
+  describe('multiGet', () => {
+    describe('when the native module throws an error', () => {
+      const exception = new Error('Yo!');
+
+      it('should throw the error', () => {
+        jest.mocked(module.multiGet).mockRejectedValueOnce(exception);
+
+        return expect(EncryptedStorage.multiGet(['some-key', 'other-key']))
+          .rejects
+          .toStrictEqual(exception);
+      });
+
+      it('should provide the error and a null value to the callback', (done) => {
+        jest.mocked(module.multiGet).mockRejectedValueOnce(exception);
+
+        EncryptedStorage.multiGet(['some-key', 'other-key'], (error) => {
+          expect(error).toStrictEqual(exception);
+          done();
+        });
+      });
+    });
+
+    describe('when the native module succeeds', () => {
+      it('should return an array with all values', () => {
+        const storage = {
+          'some-key': 'some-value',
+          'other-key': 'other-value'
+        }
+
+        jest.mocked(module.multiGet).mockResolvedValueOnce(Object.values(storage));
+
+        expect(EncryptedStorage.multiGet(Object.keys(storage)))
+          .resolves
+          .toStrictEqual(Object.values(storage));
+      });
+
+      it('should provide no error and an array with all values to the callback', (done) => {
+        const storage = {
+          'some-key': 'some-value',
+          'other-key': 'other-value'
+        }
+
+        jest.mocked(module.multiGet).mockResolvedValueOnce(Object.values(storage));
+
+        EncryptedStorage.multiGet(Object.keys(storage), (error, values) => {
+          expect(error).toBeNull();
+          expect(values).toStrictEqual(Object.values(storage));
+          done();
+        });
+      });
+    });
+  });
 });

@@ -127,7 +127,9 @@ function multiSet(items: Array<[string, string]>, cb?: StorageErrorCallback) {
   const promise = module.multiSet(items);
 
   if (cb) {
-    void promise.then(cb).catch(cb);
+    void promise
+      .then(() => cb(null))
+      .catch(cb);
   } else {
     return promise;
   }
