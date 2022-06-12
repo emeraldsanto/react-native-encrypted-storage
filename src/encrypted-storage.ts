@@ -1,7 +1,7 @@
 import { NativeModules, Platform } from 'react-native';
 
 type StorageErrorCallback = (error: Error | null) => void;
-type StorageValueCallback<T> = (error: Error | null, value?: T) => void;
+type StorageValueCallback<T> = (error: Error | null, value: T | null) => void;
 
 const LINKING_ERROR =
   `The package 'react-native-encrypted-storage' doesn't seem to be linked. Make sure: \n\n` +
@@ -31,23 +31,47 @@ function getAllKeys(cb?: StorageValueCallback<Array<string>>) {
   }
 }
 
-function getItem(key: string): Promise<string>;
+/**
+ * Retrieves data from the disk, using SharedPreferences or KeyChain, depending on the platform and returns it as the specified type.
+ * @param {string} key - A string that is associated to a value.
+ */
+function getItem(key: string): Promise<string | null>;
+
+/**
+ * Retrieves data from the disk, using SharedPreferences or KeyChain, depending on the platform and returns it as the specified type.
+ * @param {string} key - A string that is associated to a value.
+ * @param {Function} cb - The function to call when the operation completes.
+ */
 function getItem(key: string, cb: StorageValueCallback<string>): void;
+
 function getItem(key: string, cb?: StorageValueCallback<string>) {
   const promise = module.multiGet([key]);
 
   if (cb) {
     void promise
-      .then((output: Array<string>) => cb(null, output[0]))
+      .then((output: Array<string | null>) => cb(null, output[0]!))
       .catch(cb);
   } else {
     return promise
-      .then((output: Array<string>) => output[0]);
+      .then((output: Array<string | null>) => output[0]);
   }
 }
 
+/**
+ * Writes data to the disk, using SharedPreferences or KeyChain, depending on the platform.
+ * @param {string} key - A string that will be associated to the value for later retrieval.
+ * @param {string} value - The data to store.
+ */
 function setItem(key: string, value: string): Promise<void>;
+
+  /**
+   * Writes data to the disk, using SharedPreferences or KeyChain, depending on the platform.
+   * @param {string} key - A string that will be associated to the value for later retrieval.
+   * @param {string} value - The data to store.
+   * @param {Function} cb - The function to call when the operation completes.
+   */
 function setItem(key: string, value: string, cb: StorageErrorCallback): void;
+
 function setItem(key: string, value: string, cb?: StorageErrorCallback) {
   const promise = module.multiSet([[key, value]]);
 
@@ -58,8 +82,19 @@ function setItem(key: string, value: string, cb?: StorageErrorCallback) {
   }
 }
 
+/**
+ * Deletes data from the disk, using SharedPreferences or KeyChain, depending on the platform.
+ * @param {string} key - A string that is associated to a value.
+ */
 function removeItem(key: string): Promise<void>;
+
+/**
+ * Deletes data from the disk, using SharedPreferences or KeyChain, depending on the platform.
+ * @param {string} key - A string that is associated to a value.
+ * @param {Function} cb - The function to call when the operation completes.
+ */
 function removeItem(key: string, cb: StorageErrorCallback): void;
+
 function removeItem(key: string, cb?: StorageErrorCallback) {
   const promise = module.multiRemove([key]);
 
@@ -108,8 +143,17 @@ function multiRemove(keys: Array<string>, cb?: StorageErrorCallback) {
   }
 }
 
+/**
+ * Clears all data from disk, using SharedPreferences or KeyChain, depending on the platform.
+ */
 function clear(): Promise<void>
+
+/**
+ * Clears all data from disk, using SharedPreferences or KeyChain, depending on the platform.
+ * @param {Function} cb - The function to call when the operation completes.
+ */
 function clear(cb: StorageErrorCallback): void
+
 function clear(cb?: StorageErrorCallback) {
   const promise = module.clear();
 

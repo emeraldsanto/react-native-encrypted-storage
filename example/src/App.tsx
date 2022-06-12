@@ -1,7 +1,6 @@
-import * as React from 'react';
-
-import { StyleSheet, View, Text, ActivityIndicator, Button } from 'react-native';
-import EncryptedStorage, { useEncryptedStorage } from 'react-native-encrypted-storage';
+import React from 'react';
+import { ActivityIndicator, Button, StyleSheet, Text, View } from 'react-native';
+import { useEncryptedStorage } from 'react-native-encrypted-storage';
 
 export default function App() {
   const { value, error, loading, setItem, removeItem } = useEncryptedStorage('some-key');
@@ -30,10 +29,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
   },
 });
