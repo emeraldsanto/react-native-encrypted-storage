@@ -137,4 +137,46 @@ describe('encrypted-storage.ts', () => {
       });
     });
   });
+
+  describe('setItem', () => {
+    describe('when the native module throws an error', () => {
+      const exception = new Error('Yo!');
+
+      it('should throw the error', () => {
+        jest.mocked(module.multiSet).mockRejectedValueOnce(exception);
+
+        return expect(EncryptedStorage.setItem('some-key', 'some-value'))
+          .rejects
+          .toStrictEqual(exception);
+      });
+
+      it('should provide the error and a null value to the callback', (done) => {
+        jest.mocked(module.multiSet).mockRejectedValueOnce(exception);
+
+        EncryptedStorage.setItem('some-key', 'some-value', (error) => {
+          expect(error).toStrictEqual(exception);
+          done();
+        });
+      });
+    });
+
+    describe('when the native module succeeds', () => {
+      it('should return null', () => {
+        jest.mocked(module.multiSet).mockResolvedValueOnce(null)
+
+        return expect(EncryptedStorage.setItem('some-key', 'some-value'))
+          .resolves
+          .toBeNull();
+      });
+
+      it('should provide no error to the callback', (done) => {
+        jest.mocked(module.multiSet).mockResolvedValueOnce(null)
+
+        EncryptedStorage.setItem('some-key', 'some-value', (error) => {
+          expect(error).toBeNull();
+          done();
+        });
+      });
+    });
+  });
 });

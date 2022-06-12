@@ -76,7 +76,9 @@ function setItem(key: string, value: string, cb?: StorageErrorCallback) {
   const promise = module.multiSet([[key, value]]);
 
   if (cb) {
-    void promise.then(cb).catch(cb);
+    void promise
+      .then(() => cb(null))
+      .catch(cb);
   } else {
     return promise;
   }
