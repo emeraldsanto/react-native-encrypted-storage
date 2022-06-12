@@ -10,7 +10,10 @@ import { EncryptedStorage } from './encrypted-storage';
  * @param {string} key - The key to retrieve from and store to
  */
 export function useEncryptedStorage(key: string) {
-  const { data, error, mutate, isValidating } = useSWR<string | null, Error>(key, (x: string) => EncryptedStorage.getItem(x));
+  const { data, error, mutate, isValidating } = useSWR<string | null, Error>(
+    key,
+    (x: string) => EncryptedStorage.getItem(x)
+  );
 
   const setItem = useCallback((value: string) => {
     void mutate(
@@ -26,7 +29,7 @@ export function useEncryptedStorage(key: string) {
 
   return {
     error,
-    loading: isValidating,
+    loading: data == null && isValidating,
     removeItem,
     setItem,
     value: data,
