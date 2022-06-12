@@ -49,11 +49,11 @@ function getItem(key: string, cb?: StorageValueCallback<string>) {
 
   if (cb) {
     void promise
-      .then((output: Array<string | null>) => cb(null, output[0]!))
-      .catch(cb);
+      .then((output: Array<string | null>) => cb(null, output[0] ?? null))
+      .catch((error: Error) => cb(error, null));
   } else {
     return promise
-      .then((output: Array<string | null>) => output[0]);
+      .then((output: Array<string | null>) => output[0] ?? null);
   }
 }
 
