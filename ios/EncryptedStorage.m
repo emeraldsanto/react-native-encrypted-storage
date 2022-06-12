@@ -15,4 +15,6 @@ RCT_EXTERN_METHOD(multiSet:(NSArray)items withResolver:(RCTPromiseResolveBlock)r
 
 RCT_EXTERN_METHOD(multiRemove:(NSArray)keys withResolver:(RCTPromiseResolveBlock)resolve withRejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(clear:(RCTPromiseResolveBlock)resolve withRejecter:(RCTPromiseRejectBlock)reject)
+
 @end

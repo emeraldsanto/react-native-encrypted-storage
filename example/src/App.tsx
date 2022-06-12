@@ -7,13 +7,16 @@ export default function App() {
   const [result, setResult] = React.useState<Array<string>>([]);
 
   React.useEffect(() => {
-    EncryptedStorage.getAllKeys().then((keys) => {
-      console.log('All keys', keys);
-      EncryptedStorage.multiGet(keys).then((values) => {
-        console.log(values);
-        EncryptedStorage.multiRemove(keys).then(() => {
+    EncryptedStorage.multiSet([
+      ['one', 'two'],
+      ['three', 'four'],
+      ['five', 'six']
+    ]).then(() => {
+      EncryptedStorage.getAllKeys().then((keys) => {
+        console.log('All keys', keys)
+        EncryptedStorage.clear().then(() => {
           EncryptedStorage.getAllKeys().then((remaining) => {
-            console.log('Remaining keys after deletion', remaining)
+            console.log('Remaining', remaining)
           })
         })
       })

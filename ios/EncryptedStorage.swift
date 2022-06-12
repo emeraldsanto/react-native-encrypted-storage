@@ -3,11 +3,6 @@ import Security
 
 @objc(EncryptedStorage)
 class EncryptedStorage: NSObject {
-
-    @objc(multiply:withB:withResolver:withRejecter:)
-    func multiply(a: Float, b: Float, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
-        resolve(a*b)
-    }
 	
 	@objc(getAllKeys:withRejecter:)
 	func getAllKeys(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
@@ -108,5 +103,20 @@ class EncryptedStorage: NSObject {
 		}
 		
 		resolve(nil)
+	}
+	
+	@objc(clear:withRejecter:)
+	func clear(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+		let query = [
+			kSecClass as String: kSecClassGenericPassword
+		] as CFDictionary
+		
+		let status = SecItemDelete(query)
+		
+		if (status == errSecSuccess) {
+			resolve(nil)
+		} else {
+			reject(NSOSStatusErrorDomain, String(describing: status), nil)
+		}
 	}
 }
