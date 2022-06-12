@@ -9,6 +9,8 @@ RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
 
 RCT_EXTERN_METHOD(getAllKeys:(RCTPromiseResolveBlock)resolve withRejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(multiGet:(NSArray)keys withResolver:(RCTPromiseResolveBlock)resolve withRejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(multiSet:(NSArray)items withResolver:(RCTPromiseResolveBlock)resolve withRejecter:(RCTPromiseRejectBlock)reject)
 
 @end

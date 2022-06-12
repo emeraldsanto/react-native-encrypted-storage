@@ -38,6 +38,35 @@ class EncryptedStorage: NSObject {
 		resolve(x)
 	}
 	
+	@objc(multiGet:withResolver:withRejecter:)
+	func multiGet(keys: NSArray, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+		let values: NSMutableArray = NSMutableArray()
+		
+		for key in keys {
+			let query = [
+				kSecClass : kSecClassGenericPassword,
+				kSecAttrAccount : key,
+				kSecReturnData : kCFBooleanTrue!,
+				kSecMatchLimit : kSecMatchLimitOne
+			] as CFDictionary
+			
+			var valueRef: CFTypeRef?;
+			let status = SecItemCopyMatching(query, &valueRef);
+			
+			if (status == errSecItemNotFound) {
+				values.add(NSNull())
+			} else if (status == errSecSuccess) {
+				let valueAsString = String(data: valueRef as! Data, encoding: .utf8)
+				values.add(valueAsString!)
+			} else {
+				reject(NSOSStatusErrorDomain, String(describing: status), nil)
+				return
+			}
+		}
+		
+		resolve(values)
+	}
+	
 	@objc(multiSet:withResolver:withRejecter:)
 	func multiSet(items: NSArray, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
 		for tuple in items {
