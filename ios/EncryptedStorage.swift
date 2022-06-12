@@ -50,6 +50,7 @@ class EncryptedStorage: NSObject {
 				kSecValueData as String: value.data(using: .utf8)!
 			] as CFDictionary
 			
+			SecItemDelete(query)
 			let status = SecItemAdd(query, nil)
 			
 			if (status != errSecSuccess) {

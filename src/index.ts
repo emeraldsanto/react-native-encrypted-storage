@@ -31,14 +31,26 @@ export function getAllKeys(cb?: StorageValueCallback<Array<string>>) {
   }
 }
 
+export function setItem(key: string, value: string): Promise<void>;
+export function setItem(key: string, value: string, cb: StorageErrorCallback): void;
+export function setItem(key: string, value: string, cb?: StorageErrorCallback) {
+  const promise = EncryptedStorage.multiSet([[key, value]]);
+
+  if (cb) {
+    void promise.then(cb).catch(cb);
+  } else {
+    return promise;
+  }
+}
+
 export function multiSet(items: Array<[string, string]>): Promise<void>;
 export function multiSet(items: Array<[string, string]>, cb: StorageErrorCallback): void;
 export function multiSet(items: Array<[string, string]>, cb?: StorageErrorCallback) {
+  const promise = EncryptedStorage.multiSet(items);
+
   if (cb) {
-    void EncryptedStorage.multiSet(items)
-      .then(cb)
-      .catch(cb);
+    void promise.then(cb).catch(cb);
   } else {
-    return EncryptedStorage.multiSet(items);
+    return promise;
   }
 }
