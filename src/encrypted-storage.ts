@@ -15,9 +15,7 @@ const fallback = new Proxy({}, {
   },
 });
 
-const module = NativeModules.EncryptedStorage
-  ? NativeModules.EncryptedStorage
-  : fallback;
+const module = NativeModules.EncryptedStorage ?? fallback;
 
 function getAllKeys(): Promise<Array<string>>;
 function getAllKeys(cb: StorageValueCallback<Array<string>>): void;
@@ -109,8 +107,21 @@ function removeItem(key: string, cb?: StorageErrorCallback) {
   }
 }
 
+/**
+ * Retrieves data from multiple keys from the disk, using SharedPreferences or KeyChain,
+ * depending on the platform and returns it as the specified type.
+ * @param {string[]} keys - An array of string is associated to separate values.
+ */
 function multiGet(keys: Array<string>): Promise<Array<string>>;
+
+/**
+ * Retrieves data from multiple keys from the disk, using SharedPreferences or KeyChain,
+ * depending on the platform and returns it as the specified type.
+ * @param {string[]} keys - An array of strings which are associated to separate values.
+ * @param {Function} cb - The function to call when the operation completes.
+ */
 function multiGet(keys: Array<string>, cb: StorageValueCallback<Array<string>>): void;
+
 function multiGet(keys: Array<string>, cb?: StorageValueCallback<Array<string>>) {
   const promise = module.multiGet(keys);
 
@@ -123,8 +134,19 @@ function multiGet(keys: Array<string>, cb?: StorageValueCallback<Array<string>>)
   }
 }
 
+/**
+ * Writes multiple values to the disk, using SharedPreferences or KeyChain, depending on the platform.
+ * @param {string[][]} items - An array of [string, string] tuples that map a key to a value.
+ */
 function multiSet(items: Array<[string, string]>): Promise<void>;
+
+/**
+ * Writes multiple values to the disk, using SharedPreferences or KeyChain, depending on the platform.
+ * @param {string[][]} items - An array of [string, string] tuples that map a key to a value.
+ * @param {Function} cb - The function to call when the operation completes.
+ */
 function multiSet(items: Array<[string, string]>, cb: StorageErrorCallback): void;
+
 function multiSet(items: Array<[string, string]>, cb?: StorageErrorCallback) {
   const promise = module.multiSet(items);
 
@@ -137,8 +159,20 @@ function multiSet(items: Array<[string, string]>, cb?: StorageErrorCallback) {
   }
 }
 
+
+/**
+ * Deletes data from the disk, using SharedPreferences or KeyChain, depending on the platform.
+ * @param {string[]} keys - An array of strings which are associated to separate values.
+ */
 function multiRemove(keys: Array<string>): Promise<void>;
+
+/**
+ * Deletes data from the disk, using SharedPreferences or KeyChain, depending on the platform.
+ * @param {string[]} keys - An array of strings which are associated to separate values.
+ * @param {Function} cb - The function to call when the operation completes.
+ */
 function multiRemove(keys: Array<string>, cb: StorageErrorCallback): void;
+
 function multiRemove(keys: Array<string>, cb?: StorageErrorCallback) {
   const promise = module.multiRemove(keys);
 
