@@ -37,4 +37,27 @@ class EncryptedStorage: NSObject {
 		
 		resolve(x)
 	}
+	
+	@objc(multiSet:withResolver:withRejecter:)
+	func multiSet(items: NSArray, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+		for tuple in items {
+			let key = (tuple as! NSArray)[0] as! String
+			let value = (tuple as! NSArray)[1] as! String
+			
+			let query = [
+				kSecClass as String: kSecClassGenericPassword,
+				kSecAttrAccount as String: key,
+				kSecValueData as String: value.data(using: .utf8)!
+			] as CFDictionary
+			
+			let status = SecItemAdd(query, nil)
+			
+			if (status != errSecSuccess) {
+				reject(NSOSStatusErrorDomain, String(describing: status), nil)
+				return
+			}
+		}
+		
+		resolve(nil)
+	}
 }
