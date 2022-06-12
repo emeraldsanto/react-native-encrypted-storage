@@ -17,8 +17,19 @@ const fallback = new Proxy({}, {
 
 const module = NativeModules.EncryptedStorage ?? fallback;
 
+/**
+ * Retrieves all keys stored by your application using SharedPreferences
+ * or Keychain, depending on the platform.
+ */
 function getAllKeys(): Promise<Array<string>>;
+
+/**
+ * Retrieves all keys stored by your application using SharedPreferences
+ * or Keychain, depending on the platform.
+ * @param {Function} cb - The function to call when the operation completes.
+ */
 function getAllKeys(cb: StorageValueCallback<Array<string>>): void;
+
 function getAllKeys(cb?: StorageValueCallback<Array<string>>) {
   if (cb) {
     void module.getAllKeys()
@@ -30,13 +41,15 @@ function getAllKeys(cb?: StorageValueCallback<Array<string>>) {
 }
 
 /**
- * Retrieves data from the disk, using SharedPreferences or KeyChain, depending on the platform and returns it as the specified type.
+ * Retrieves data from the disk, using SharedPreferences or KeyChain,
+ * depending on the platform and returns it as the specified type.
  * @param {string} key - A string that is associated to a value.
  */
 function getItem(key: string): Promise<string | null>;
 
 /**
- * Retrieves data from the disk, using SharedPreferences or KeyChain, depending on the platform and returns it as the specified type.
+ * Retrieves data from the disk, using SharedPreferences or KeyChain,
+ * depending on the platform and returns it as the specified type.
  * @param {string} key - A string that is associated to a value.
  * @param {Function} cb - The function to call when the operation completes.
  */
