@@ -90,4 +90,23 @@ class EncryptedStorage: NSObject {
 		
 		resolve(nil)
 	}
+	
+	@objc(multiRemove:withResolver:withRejecter:)
+	func multiRemove(keys: NSArray, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+		for key in keys {
+			let query = [
+				kSecClass as String: kSecClassGenericPassword,
+				kSecAttrAccount as String: key,
+			] as CFDictionary
+			
+			let status = SecItemDelete(query)
+			
+			if (status != errSecSuccess) {
+				reject(NSOSStatusErrorDomain, String(describing: status), nil)
+				return
+			}
+		}
+		
+		resolve(nil)
+	}
 }
