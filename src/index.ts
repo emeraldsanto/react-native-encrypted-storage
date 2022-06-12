@@ -58,6 +58,18 @@ export function setItem(key: string, value: string, cb?: StorageErrorCallback) {
   }
 }
 
+export function removeItem(key: string): Promise<void>;
+export function removeItem(key: string, cb: StorageErrorCallback): void;
+export function removeItem(key: string, cb?: StorageErrorCallback) {
+  const promise = EncryptedStorage.multiRemove([key]);
+
+  if (cb) {
+    void promise.then(cb).catch(cb);
+  } else {
+    return promise;
+  }
+}
+
 export function multiGet(keys: Array<string>): Promise<Array<string>>;
 export function multiGet(keys: Array<string>, cb: StorageValueCallback<Array<string>>): void;
 export function multiGet(keys: Array<string>, cb?: StorageValueCallback<Array<string>>) {
