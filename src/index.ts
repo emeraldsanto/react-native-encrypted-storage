@@ -83,3 +83,15 @@ export function multiSet(items: Array<[string, string]>, cb?: StorageErrorCallba
     return promise;
   }
 }
+
+export function multiRemove(keys: Array<string>): Promise<void>;
+export function multiRemove(keys: Array<string>, cb: StorageErrorCallback): void;
+export function multiRemove(keys: Array<string>, cb?: StorageErrorCallback) {
+  const promise = EncryptedStorage.multiRemove(keys);
+
+  if (cb) {
+    void promise.then(cb).catch(cb);
+  } else {
+    return promise;
+  }
+}

@@ -102,4 +102,25 @@ class EncryptedStorageModule(reactContext: ReactApplicationContext) :
       promise.reject(ex)
     }
   }
+
+  @ReactMethod
+  fun multiRemove(keys: ReadableArray, promise: Promise) {
+    try {
+      val editor = this.sharedPreferences.edit()
+
+      for (index in 0 until keys.size()) {
+        editor.remove(keys.getString(index))
+      }
+
+      val saved = editor.commit()
+
+      if (saved) {
+        promise.resolve(null)
+      } else {
+        promise.reject(Exception("An error occurred while removing ${keys.size()} keys"))
+      }
+    } catch (ex: Exception) {
+      promise.reject(ex)
+    }
+  }
 }
