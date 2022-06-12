@@ -10,7 +10,7 @@ import com.facebook.react.bridge.*
 class EncryptedStorageModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
   companion object {
-    private val NATIVE_MODULE_NAME = "RNEncryptedStorage"
+    private val NATIVE_MODULE_NAME = "EncryptedStorage"
     private val SHARED_PREFERENCES_FILENAME = "RN_ENCRYPTED_STORAGE_SHARED_PREF"
   }
 
