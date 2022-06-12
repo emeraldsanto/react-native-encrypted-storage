@@ -1,6 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 
-type StorageErrorCallback = (error?: Error) => void;
+// type StorageErrorCallback = (error?: Error) => void;
 type StorageValueCallback<T> = (error?: Error, value?: T) => void;
 
 const LINKING_ERROR =
@@ -9,14 +9,11 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-const fallback = new Proxy(
-  {},
-  {
-    get() {
-      throw new Error(LINKING_ERROR);
-    },
-  }
-);
+const fallback = new Proxy({}, {
+  get() {
+    throw new Error(LINKING_ERROR);
+  },
+});
 
 const EncryptedStorage = NativeModules.EncryptedStorage
   ? NativeModules.EncryptedStorage
@@ -26,7 +23,7 @@ export function getAllKeys(): Promise<Array<string>>;
 export function getAllKeys(cb: StorageValueCallback<Array<string>>): void;
 export function getAllKeys(cb?: StorageValueCallback<Array<string>>) {
   if (cb) {
-    EncryptedStorage.getAllKeys()
+    void EncryptedStorage.getAllKeys()
       .then((output: Array<string>) => cb(undefined, output))
       .catch(cb);
   } else {

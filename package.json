@@ -47,9 +47,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.18.2",
     "@commitlint/config-conventional": "^11.0.0",
-    "@react-native-community/eslint-config": "^2.0.0",
     "@release-it/conventional-changelog": "^2.0.0",
+    "@vercel/style-guide": "^3.0.0",
     "@types/jest": "^26.0.0",
     "@types/react": "^17.0.2",
     "@types/react-native": "0.67.8",
@@ -100,36 +101,7 @@
       }
     }
   },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@react-native-community",
-      "prettier"
-    ],
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "quoteProps": "consistent",
-          "singleQuote": true,
-          "tabWidth": 2,
-          "trailingComma": "es5",
-          "useTabs": false
-        }
-      ]
-    }
-  },
-  "eslintIgnore": [
-    "node_modules/",
-    "lib/"
-  ],
-  "prettier": {
-    "quoteProps": "consistent",
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false
-  },
+  "prettier": "@vercel/style-guide/prettier",
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",

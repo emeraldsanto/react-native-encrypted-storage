@@ -7,7 +7,7 @@ export default function App() {
   const [result, setResult] = React.useState<Array<string>>([]);
 
   React.useEffect(() => {
-    getAllKeys().then(setResult);
+    void getAllKeys().then(setResult);
   }, []);
 
   return (
