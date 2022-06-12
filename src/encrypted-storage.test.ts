@@ -3,11 +3,11 @@ import { EncryptedStorage } from './encrypted-storage';
 
 const { EncryptedStorage: module } = NativeModules;
 
-describe('encrypted-storage.ts', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
+describe('encrypted-storage.ts', () => {
   describe('getAllKeys', () => {
     describe('when the native module throws an error', () => {
       const exception = new Error('Yo!');
@@ -212,7 +212,7 @@ describe('encrypted-storage.ts', () => {
       });
 
       it('should provide no error to the callback', (done) => {
-        jest.mocked(module.multiSet).mockResolvedValueOnce(null);
+        jest.mocked(module.multiRemove).mockResolvedValueOnce(null);
 
         EncryptedStorage.removeItem('some-key', (error) => {
           expect(error).toBeNull();
@@ -269,6 +269,60 @@ describe('encrypted-storage.ts', () => {
         EncryptedStorage.multiGet(Object.keys(storage), (error, values) => {
           expect(error).toBeNull();
           expect(values).toStrictEqual(Object.values(storage));
+          done();
+        });
+      });
+    });
+  });
+
+  describe('multiSet', () => {
+    describe('when the native module throws an error', () => {
+      const exception = new Error('Yo!');
+
+      it('should throw the error', () => {
+        jest.mocked(module.multiSet).mockRejectedValueOnce(exception);
+
+        return expect(EncryptedStorage.multiSet([
+          ['some-key', 'some-value'],
+          ['other-key', 'other-value']
+        ]))
+          .rejects
+          .toStrictEqual(exception);
+      });
+
+      it('should provide the error and a null value to the callback', (done) => {
+        jest.mocked(module.multiSet).mockRejectedValueOnce(exception);
+
+        EncryptedStorage.multiSet([
+          ['some-key', 'some-value'],
+          ['other-key', 'other-value']
+        ], (error) => {
+          expect(error).toStrictEqual(exception);
+          done();
+        });
+      });
+    });
+
+    describe('when the native module succeeds', () => {
+      it('should return null', () => {
+        jest.mocked(module.multiSet).mockResolvedValueOnce(null);
+
+        return expect(EncryptedStorage.multiSet([
+          ['some-key', 'some-value'],
+          ['other-key', 'other-value']
+        ]))
+          .resolves
+          .toStrictEqual(null);
+      });
+
+      it('should provide no error to the callback', (done) => {
+        jest.mocked(module.multiSet).mockResolvedValueOnce(null);
+
+        EncryptedStorage.multiSet([
+          ['some-key', 'some-value'],
+          ['other-key', 'other-value']
+        ], (error) => {
+          expect(error).toBeNull();
           done();
         });
       });
