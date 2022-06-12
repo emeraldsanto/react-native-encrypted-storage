@@ -370,4 +370,46 @@ describe('encrypted-storage.ts', () => {
       });
     });
   });
+
+  describe('clear', () => {
+    describe('when the native module throws an error', () => {
+      const exception = new Error('Yo!');
+
+      it('should throw the error', () => {
+        jest.mocked(module.clear).mockRejectedValueOnce(exception);
+
+        return expect(EncryptedStorage.clear())
+          .rejects
+          .toStrictEqual(exception);
+      });
+
+      it('should provide the error and a null value to the callback', (done) => {
+        jest.mocked(module.clear).mockRejectedValueOnce(exception);
+
+        EncryptedStorage.clear((error) => {
+          expect(error).toStrictEqual(exception);
+          done();
+        });
+      });
+    });
+
+    describe('when the native module succeeds', () => {
+      it('should return null', () => {
+        jest.mocked(module.clear).mockResolvedValueOnce(null);
+
+        return expect(EncryptedStorage.clear())
+          .resolves
+          .toStrictEqual(null);
+      });
+
+      it('should provide no error to the callback', (done) => {
+        jest.mocked(module.clear).mockResolvedValueOnce(null);
+
+        EncryptedStorage.clear((error) => {
+          expect(error).toBeNull();
+          done();
+        });
+      });
+    });
+  });
 });

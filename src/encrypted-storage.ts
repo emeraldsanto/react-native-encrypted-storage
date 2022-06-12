@@ -101,7 +101,9 @@ function removeItem(key: string, cb?: StorageErrorCallback) {
   const promise = module.multiRemove([key]);
 
   if (cb) {
-    void promise.then(cb).catch(cb);
+    void promise
+      .then(() => cb(null))
+      .catch(cb);
   } else {
     return promise;
   }
@@ -141,7 +143,9 @@ function multiRemove(keys: Array<string>, cb?: StorageErrorCallback) {
   const promise = module.multiRemove(keys);
 
   if (cb) {
-    void promise.then(cb).catch(cb);
+    void promise
+      .then(() => cb(null))
+      .catch(cb);
   } else {
     return promise;
   }
@@ -162,7 +166,9 @@ function clear(cb?: StorageErrorCallback) {
   const promise = module.clear();
 
   if (cb) {
-    void promise.then(cb).catch(cb);
+    void promise
+      .then(() => cb(null))
+      .catch(cb);
   } else {
     return promise;
   }
