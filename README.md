@@ -190,6 +190,8 @@ static void ClearKeychainIfNecessary() {
 
 @end
 ```
+### Sharing the `Keychain` with app extensions
+You'll need to enable the Keychain Sharing entitlement in the `Signing & Capabilities` section of your build target
 
 # Limitations
 
