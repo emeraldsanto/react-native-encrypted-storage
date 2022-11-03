@@ -132,6 +132,30 @@ async function removeUserSession() {
 }
 ```
 
+### Storage options
+
+You can pass a set of **options** as the previous to last parameter of `setItem`, `getItem`, `removeItem` or `clear` functions:
+
+```js
+await EncryptedStorage.removeItem('user_session', {
+  storageName: 'userStorage',
+});
+```
+
+The following options are supported:
+
+- `keychainAccessibility` (**iOS only**)
+
+  Control item availability relative to the lock state of the device. If the attribute ends with the string `ThisDeviceOnly`, the item can be restored to the same device that created a backup, but it isn’t migrated when restoring another device’s backup data. [Read more](https://developer.apple.com/documentation/security/keychain_services/keychain_items/restricting_keychain_item_accessibility?language=objc)
+
+  Default value: `kSecAttrAccessibleAfterFirstUnlock`
+
+- `storageName`
+
+  A string for identifying a set of storage items. Should not contain path separators. Uses [kSecAttrService](https://developer.apple.com/documentation/security/ksecattrservice?language=objc) on iOS and [fileName](https://developer.android.com/reference/kotlin/androidx/security/crypto/EncryptedSharedPreferences?hl=en#create) on Android.
+
+  Default value: App's bundle id
+
 ## Note regarding `Keychain` persistence
 
 You'll notice that the iOS `Keychain` is not cleared when your app is uninstalled, this is the expected behaviour. However, if you do want to achieve a different behaviour, you can use the below snippet to clear the `Keychain` on the first launch of your app.
